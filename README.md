@@ -1,6 +1,6 @@
 # Owlin REST API
 
-**Table of contents**
+##### Table of contents
 [get_articles](#get_articles)
 [stats](#stats)
 

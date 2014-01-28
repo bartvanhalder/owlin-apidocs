@@ -1,10 +1,10 @@
 # Owlin REST API
 
 **Table of contents**
-- [get_articles](#get_articles)
-- [stats](#stats)
+[get_articles](#get_articles)
+[stats](#stats)
 
-—
+======================
 
 ### URL Scheme
 The Owlin request url of the Owlin API is constructed as follows,
@@ -12,7 +12,7 @@ The Owlin request url of the Owlin API is constructed as follows,
 #### Input:
 Both GET an POST are supported for the same type of requests. However, whenever an extra-parameter is longer than 1024 bytes, you should use POST headers.
 
-##### For GET requests with e.g. 2 parameters:
+	⁃	##### For GET requests with e.g. 2 parameters:
 ``https://newsroom.owlin.com/api/v1/method/value?extra-parameter_1=extra-value_2&extra-parameter_2=extra-value_2``
 
 ##### For POST requests with e.g. 1 parameter: 

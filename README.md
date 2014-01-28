@@ -32,7 +32,7 @@ When a method requires a dictionary as an extra-value, encode it as JSON and add
 #### Authentication
 Almost every request requires authentication. It is a two-step process. 
 
-1.  ##### Firstly, you request a secret_key. 
+##### 1. Firstly, you request a secret_key. 
 Each time you request a secret_key a new session is started. 
 You request a secret_key using the method generate_secret. The method requires 2 parameters, ``email`` and ``password``. If you are using the newsroom, you can use the same credentials here. 
 

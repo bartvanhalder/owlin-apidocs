@@ -375,15 +375,11 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 # Undocumented methods:
 - user_info
 - invite.email
-- signup.token
-- invite.generate_token
-- signup
 - group.get
 - group.save
 - group.add
 - group.remove
 - password.reset
-- password.update
 - change_password
 - highlight
 - es_query

@@ -10,12 +10,12 @@
 - [API Methods](#api_methods)
 	- [get_articles](#get_articles)
 	- [stats](#stats)
-- [filter.get](#filter-get)
-- [filter.save](#filter-save)
-- [invite.generate_token](#invite-generate_token)
-- [signup.token](#signup-token)
+- [filter.get](#filterget)
+- [filter.save](#filtersave)
+- [invite.generate_token](#invitegenerate_token)
+- [signup.token](#signuptoken)
 - [signup](#signup)
-- [password.update](#password-update)
+- [password.update](#passwordupdate)
 - [Undocumented Methods](#undocumented-methods)
 	
 ======================
@@ -287,7 +287,7 @@ The following URL will create a new user account
 - ``phone``
 	- Your phone number
 - ``invite_token``
-	- Your invite token you generated before using the [invite.generate_token function](#invite-generate_token)
+	- Your invite token you generated before using the [invite.generate_token function](#invitegenerate_token)
 
 ##### Example output:
 ```javascript

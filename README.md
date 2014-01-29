@@ -166,7 +166,8 @@ This method has no advanced options.
         "edit": true,
         "alert": false
     }
-}```
+}
+```
 
 **Note that each requested filter is nested in an object with its filter_id as key.**
 
@@ -212,7 +213,8 @@ Pass the filter_id in the ``value`` parameter in order to save an existing filte
 	"last_modified": 1390401941.274,
 	"edit": true,
 	"alert": false
-}``` 
+}
+``` 
 		
 ============
 # General Definitions

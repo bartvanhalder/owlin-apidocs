@@ -1,16 +1,16 @@
 # Owlin REST API
 
 ##### Table of contents
-- [The URL Scheme](#URL-Scheme)
-	- [Input / Sending data]
-	- [Output / Receiving data]
-- [General definitions](#General_definitions)
-	- [filter rule definitions](#Filter_Rules)
+- [The URL Scheme](#url-scheme)
+	- [Input / Sending data](#input—sending-data)
+	- [Output / Receiving data](#output—receiving-data)
+- [General definitions](#general_definitions)
+	- [filter rule definitions](#filter_rules)
 	- [stream_id definitions](#stream_id_definitions)
-- [API Methods](#API_Methods)
+- [API Methods](#api_methods)
 	- [get_articles](#get_articles)
 	- [stats](#stats)
-- [Undocumented Methods](#Undocumented-methods)
+- [Undocumented Methods](#undocumented-methods)
 	
 ======================
 
@@ -29,7 +29,7 @@ Both GET an POST are supported for the same type of requests. However, whenever 
 
 The value parameter is optional in general, both for POST and GET requests, some methods however require a certain value to be set. 
 
-##### Multidict parameters
+##### Multi-dict parameters
 When a method requires a dictionary as an extra-value, encode it as JSON and add two brackets behind [extra-parameter] i.e.
 ``https://newsroom.owlin.com/api/v1/method/value?extra-parameter[]=extra-value``
 
@@ -38,6 +38,8 @@ The API will always respond JSON.
 
 ##### JSONP Callbacks
 To request a JSONP Callback from the API, to be used for instance in javascript, use ``?callback=callback_function_name``
+
+==============
 
 ### Authentication
 Almost every request requires authentication. It is a two-step process. 
@@ -106,6 +108,8 @@ The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of
 			- number representing scored, score, epoch depending on the method of sorting.
 			- Using the 'to' parameter, you can define the maximum value of the range within which the articles are sorted.
 
+============
+
 ### stats 
 Use this method to get statistics about articles in a news filter.
 
@@ -126,6 +130,7 @@ The following url will return an array with amount of articles posted per minute
 	- default: ``now``
 	- Using the 'date_to' parameter you can define the end range of the statistics. Based on article publish date.
 
+============
 
 ### filter.get
 Use this method to get filters by their ids.
@@ -140,6 +145,7 @@ Separate multiple filter_ids by commas
 ##### Advanced parameters:
 This method has no advanced options
 
+============
 
 ### filter.save
 Only if you have permissions you can use this method to add or edit a filter.
@@ -156,7 +162,6 @@ The following url will create a filter searching for apple:
 	- Sends an email to the user whenever a new article matches the filter
 		
 ============
-
 # General Definitions
 
 ### Filter Rules:
@@ -166,7 +171,7 @@ When saving the filter, you can attach rules to the must and must_not parameters
 	- Yields articles matching the query string
 	- Example: `` { "type" : "search, "value" : "apple" } ``
 	- Parameters
-		- value: ``query in the Lucene query language``
+		- ``value``: Query in the Lucene query language
 - should
 	- Yields articles containing at least 2 terms
 	- Example: ``{ "type" : "should", "value" : "apple samsung nokia", "n" : 2 }``

@@ -174,7 +174,8 @@ This method has no advanced options.
 ============
 
 ### filter.save
-Only if you have permissions you can use this method to add or edit a filter.
+Use this method to create or edit a filter.
+
 The following url will create a filter searching for apple:
 ``https://newsroom.owlin.com/api/v1/filter.save/new?title=Apple&rules[]=[{“type":"search","value":"apple"}]&access_key=access_key&nonce=nonce&time=time``
 		
@@ -182,7 +183,7 @@ The following url will create a filter searching for apple:
 Pass the value ``new``  to create a new filter.
 
 **Editing an existing filter**
-Pass the filter_id in the ``value`` parameter in order to save an existing filter.
+Pass the filter_id in the ``value`` parameter in order to save an existing filter. This requires permissions to edit this filter.
 		
 ##### Advanced parameters:
 - title
@@ -194,7 +195,7 @@ Pass the filter_id in the ``value`` parameter in order to save an existing filte
 - rules
 - Define here on what queries your filter should search. Read more about rules [here](#filter-rules)
 
-##### Output:
+##### Example output:
 ```javascript
 {
 	"filter_id": "vfzowgkpkrupafspxscilgfmqwrcgqnh",
@@ -214,9 +215,107 @@ Pass the filter_id in the ``value`` parameter in order to save an existing filte
 	"edit": true,
 	"alert": false
 }
-``` 
-		
+``` 		
 ============
+
+### invite.generate_token
+Generate a token you can use to create a new user account. 
+
+The following url will create a token to create a new user account:
+``https://newsroom.owlin.com/api/v1/invite.generate_token?access_key=access_key&nonce=nonce&time=time``
+
+**Note: This method is not available to everyone and will be activated upon request.** 
+**Note: Signup tokens expire after 60 days**
+
+##### Advanced parameters:
+- email
+	- This assigns the invite token to be only used by the defined email address. 
+
+##### Example output:
+```javascript
+{
+    "token_id": "swysriumctlbfbpecxlshhwysfhtelxx",
+    "inviter": "7e7eecc0534611e2bc97001143dc2095",
+    "user_id": false,
+    "created": 1390989876.013,
+    "email": ""
+  }```
+
+============
+
+### signup.token
+Retrieve information about a signup token.
+
+The following url will return information about a given signup token:
+``https://newsroom.owlin.com/api/v1/signup.token/[token_id]``
+
+##### Advanced parameters:
+This method has no advanced options.
+
+##### Example output:
+```javascript
+{
+    "token_id": "swysriumctlbfbpecxlshhwysfhtelxx",
+    "inviter": "7e7eecc0534611e2bc97001143dc2095",
+    "user_id": false,
+    "created": 1390989876.013,
+    "email": ""
+  }```
+
+============
+
+### signup
+This creates a new user account you can use to login into the newsroom or make API requests with.
+
+The following URL will create a new user account
+``https://newsroom.owlin.com/api/v1/signup?name=Luke%20Skywalker&email=luke.skywalker@jediorder.gov&password=usetheforce111&phone=063FE4823&invite_token=swysriumctlbfbpecxlshhwysfhtelxx&access_key=access_key&nonce=nonce&time=time``
+
+- ``name``
+	- Your name
+- ``email``
+	- Your email address
+- ``password``
+	- Your password, should be at least 6 characters
+- ``phone``
+	- Your phone number
+- ``invite_token``
+	- Your invite token you generated before using the [invite.generate_token function](#invite-generate_token)
+
+##### Example output:
+```javascript
+{
+    "secret_key": "voqiwzxhmcnswgnhtkmvqegbulalmsib",
+    "session_id": "glkltchg0qnnehiqjcrdjyednyniuaso",
+    "creation_date": 1390990917,
+    "last_used_date": 1390990917,
+    "user_id": "mwfhnhnpwitwpkuvxnjjbzztjwphcmtk",
+    "server_time": 1390990917
+  }
+```
+
+============
+
+### password.update
+This allows you to change the password for your user account when you still remember the old password.
+
+The following url will change your password:
+``https://newsroom.owlin.com/api/v1/password.update?old_password=usetheforce111&new_password=I_miss_my_dad82&access_key=access_key&nonce=nonce&time=time``
+
+- ``old_password``
+	- Please verify your old password for extra verification
+- ``new_password``
+	- Your new password, should be at least 6 characters long.
+
+##### Example output:
+```javascript
+{
+    "success": true,
+    "user_id": "mwfhnhnpwitwpkuvxnjjbzztjwphcmtk"
+  }
+```
+
+============
+
 # General Definitions
 
 ### Filter Rules:
@@ -277,8 +376,6 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 - group.save
 - group.add
 - group.remove
-- filter.save
-- filter.get
 - password.reset
 - password.update
 - change_password

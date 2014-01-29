@@ -143,23 +143,74 @@ The following url will return a list with the contents of the apple filter
 Separate multiple filter_ids by commas
 
 ##### Advanced parameters:
-This method has no advanced options
+This method has no advanced options.
+
+##### Output:
+``{
+    "vfzowgkpkrupafspxscilgfmqwrcgqnh": {
+        "filter_id": "vfzowgkpkrupafspxscilgfmqwrcgqnh",
+        "stream_id": "filter:vfzowgkpkrupafspxscilgfmqwrcgqnh",
+        "creator": "7e7eecc0534611e2bc97001143dc2095",
+        "created": 1390401909.438,
+        "rules": [
+            {
+                "value": "\"albert heijn\" \"albert hein\" \"appie\"",
+                "type": "search"
+            }
+        ],
+        "title": "Albert Heijn",
+        "sort": "decaying_activity",
+        "group_by": "topic",
+        "last_modified": 1390401941.274,
+        "edit": true,
+        "alert": false
+    }
+}`` 
+
+**Note that each requested filter is nested in an object with its filter_id as key.**
 
 ============
 
 ### filter.save
 Only if you have permissions you can use this method to add or edit a filter.
 The following url will create a filter searching for apple:
-``https://newsroom.owlin.com/api/v1/filter.save?title=Apple&rules[]=[{“type":"search","value":"apple"}]&access_key=access_key&nonce=nonce&time=time``
+``https://newsroom.owlin.com/api/v1/filter.save/new?title=Apple&rules[]=[{“type":"search","value":"apple"}]&access_key=access_key&nonce=nonce&time=time``
 		
+**Creating a new filter**
+Pass the value ``new``  to create a new filter.
+
 **Editing an existing filter**
-	Pass the filter_id in the 'value' parameter in order to save an existing filter.
+Pass the filter_id in the ``value`` parameter in order to save an existing filter.
 		
 ##### Advanced parameters:
+- title
+	- Defines the title for the filter
+	- This field is required
 - alert
-	- default: false
-	- boolean
 	- Sends an email to the user whenever a new article matches the filter
+	- Default: false
+- rules
+- Define here on what queries your filter should search. Read more about rules [here](#filter-rules)
+
+##### Output:
+``"{
+	"filter_id": "vfzowgkpkrupafspxscilgfmqwrcgqnh",
+	"stream_id": "filter:vfzowgkpkrupafspxscilgfmqwrcgqnh",
+	"creator": "7e7eecc0534611e2bc97001143dc2095",
+	"created": 1390401909.438,
+	"rules": [
+		{
+			"value": "\"albert heijn\" \"albert hein\" \"appie\"",
+			"type": "search"
+		}
+	],
+	"title": "Albert Heijn",
+	"sort": "decaying_activity",
+	"group_by": "topic",
+	"last_modified": 1390401941.274,
+	"edit": true,
+	"alert": false
+}”`` 
 		
 ============
 # General Definitions
@@ -212,7 +263,6 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 - group:group_id
 	- Will return all articles merged from a group of filters		
 
-
 # Undocumented methods:
 - user_info
 - invite.email
@@ -232,5 +282,4 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 - es_query
 - read.get
 - read.save
-- generate_secret
 	

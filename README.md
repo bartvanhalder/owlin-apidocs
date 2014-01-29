@@ -267,7 +267,8 @@ This method has no advanced options.
     "user_id": false,
     "created": 1390989876.013,
     "email": ""
-  }```
+  }
+```
 
 ============
 

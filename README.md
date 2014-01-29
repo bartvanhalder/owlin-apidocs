@@ -146,7 +146,8 @@ Separate multiple filter_ids by commas
 This method has no advanced options.
 
 ##### Output:
-``{
+```javascript
+{
     "vfzowgkpkrupafspxscilgfmqwrcgqnh": {
         "filter_id": "vfzowgkpkrupafspxscilgfmqwrcgqnh",
         "stream_id": "filter:vfzowgkpkrupafspxscilgfmqwrcgqnh",
@@ -165,7 +166,7 @@ This method has no advanced options.
         "edit": true,
         "alert": false
     }
-}`` 
+}```
 
 **Note that each requested filter is nested in an object with its filter_id as key.**
 
@@ -193,7 +194,8 @@ Pass the filter_id in the ``value`` parameter in order to save an existing filte
 - Define here on what queries your filter should search. Read more about rules [here](#filter-rules)
 
 ##### Output:
-``"{
+```javascript
+{
 	"filter_id": "vfzowgkpkrupafspxscilgfmqwrcgqnh",
 	"stream_id": "filter:vfzowgkpkrupafspxscilgfmqwrcgqnh",
 	"creator": "7e7eecc0534611e2bc97001143dc2095",
@@ -210,7 +212,7 @@ Pass the filter_id in the ``value`` parameter in order to save an existing filte
 	"last_modified": 1390401941.274,
 	"edit": true,
 	"alert": false
-}”`` 
+}``` 
 		
 ============
 # General Definitions

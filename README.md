@@ -1,18 +1,26 @@
 # Owlin REST API
 
 ##### Table of contents
-[get_articles](#get_articles)
-[stats](#stats)
-
+- [The URL Scheme](#URL-Scheme)
+	- [Input / Sending data]
+	- [Output / Receiving data]
+- [General definitions](#General_definitions)
+	- [filter rule definitions](#Filter_Rules)
+	- [stream_id definitions](#stream_id_definitions)
+- [API Methods](#API_Methods)
+	- [get_articles](#get_articles)
+	- [stats](#stats)
+- [Undocumented Methods](#Undocumented-methods)
+	
 ======================
 
 ### URL Scheme
 The Owlin request url of the Owlin API is constructed as follows,
 
-#### Input:
+#### Input / Sending data:
 Both GET an POST are supported for the same type of requests. However, whenever an extra-parameter is longer than 1024 bytes, you should use POST headers.
 
-	⁃	##### For GET requests with e.g. 2 parameters:
+##### For GET requests with e.g. 2 parameters:
 ``https://newsroom.owlin.com/api/v1/method/value?extra-parameter_1=extra-value_2&extra-parameter_2=extra-value_2``
 
 ##### For POST requests with e.g. 1 parameter: 
@@ -21,17 +29,17 @@ Both GET an POST are supported for the same type of requests. However, whenever 
 
 The value parameter is optional in general, both for POST and GET requests, some methods however require a certain value to be set. 
 
-#### Output:
-The API will always respond JSON.
-
-#### JSONP Callbacks
-To request a JSONP Callback from the API, to be used for instance in javascript, use ``?callback=callback_function_name``
-
-#### Multidict parameters
+##### Multidict parameters
 When a method requires a dictionary as an extra-value, encode it as JSON and add two brackets behind [extra-parameter] i.e.
 ``https://newsroom.owlin.com/api/v1/method/value?extra-parameter[]=extra-value``
 
-#### Authentication
+#### Output / Receiving data:
+The API will always respond JSON.
+
+##### JSONP Callbacks
+To request a JSONP Callback from the API, to be used for instance in javascript, use ``?callback=callback_function_name``
+
+### Authentication
 Almost every request requires authentication. It is a two-step process. 
 
 ##### 1. Firstly, you request a secret_key. 
@@ -65,10 +73,11 @@ Summarizing, your access key should look like this:
 
 **Do not pass the secret_key in normal api requests, the secret key is only to be used with the generate_secret method.** 
 
+=========
 
 # Methods
     
-## get_articles	
+### get_articles	
 Use the get_articles method to obtain articles from a news filter. 
 
 The following url will return all articles from the Apple filter with the filter_id ``82512822dfe111e2a6d2001143dc2095``:
@@ -97,7 +106,7 @@ The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of
 			- number representing scored, score, epoch depending on the method of sorting.
 			- Using the 'to' parameter, you can define the maximum value of the range within which the articles are sorted.
 
-## stats 
+### stats 
 Use this method to get statistics about articles in a news filter.
 
 The following url will return an array with amount of articles posted per minute, each minute, over the past 14 days,
@@ -107,18 +116,18 @@ The following url will return an array with amount of articles posted per minute
 
 #### Additional parameters:
 - interval
-	- default: 60
-		- number of seconds, length of the binning time intervals. 
-		- Using the 'interval' parameter you can define the amount of seconds to group the statistics on.
+	- default: ``60``
+	- number of seconds, length of the binning time intervals. 
+	- Using the 'interval' parameter you can define the amount of seconds to group the statistics on.
 - date_from
-	- default: time - 2 weeks ago
+	- default: ``epoch(time - 2 weeks ago)``
 	- Using the 'from' parameter you can define the begin date in epoch to select the articles from.
 - date_to
-	- default: now
+	- default: ``now``
 	- Using the 'date_to' parameter you can define the end range of the statistics. Based on article publish date.
 
 
-#### filter.get
+### filter.get
 Use this method to get filters by their ids.
 
 This method always returns the title of the filter, the alert settings, last modified, created, creator and if you are allowed acces it also gives the search rules which determine the filter's output.  
@@ -132,7 +141,7 @@ Separate multiple filter_ids by commas
 This method has no advanced options
 
 
-#### filter.save
+### filter.save
 Only if you have permissions you can use this method to add or edit a filter.
 The following url will create a filter searching for apple:
 ``https://newsroom.owlin.com/api/v1/filter.save?title=Apple&rules[]=[{“type":"search","value":"apple"}]&access_key=access_key&nonce=nonce&time=time``
@@ -146,57 +155,49 @@ The following url will create a filter searching for apple:
 	- boolean
 	- Sends an email to the user whenever a new article matches the filter
 		
-#### Rules:
+============
+
+# General Definitions
+
+### Filter Rules:
 When saving the filter, you can attach rules to the must and must_not parameters. You can use the following rules:
 	
 - search
-> Yields articles matching the query string
-> Value	: query in the lucene query language
-> Example: `` { "type" : "search, "value" : "apple" } ``
+	- Yields articles matching the query string
+	- Example: `` { "type" : "search, "value" : "apple" } ``
+	- Parameters
+		- value: ``query in the Lucene query language``
 - should
-Yields articles containing at least 2 terms
-Parameters:
-	- value
-query in the lucene query language
-	- n	
-minimum amount of terms, ranging between 1 and 10
-	- Example: { "type" : "should", "value" : "apple samsung nokia", "n" : 2 }
+	- Yields articles containing at least 2 terms
+	- Example: ``{ "type" : "should", "value" : "apple samsung nokia", "n" : 2 }``
+	- Parameters:
+		- ``value``: query in the Lucene query language
+		- ``n``: minimum amount of terms, ranging between 1 and 10
+- language
+	- Yields articles of only these languages
+	- Example: ``{ "type" : "lang", "value" : [ "nl" ] }``
+	- Default: all languages
+	- Parameters:
+		- ``value``: Language code of language, can be ``nl``, ``fr``, ``en``, ``de`` or ``pl``
+- translate
+	- Defines to search in the original or translated text (or both).
+	- Example: ``{ "type" : "translate", "value" : ["original", "translated"] }``
+	- Default: ``[original]``
+	- Parameters:
+		- ``value``: list of text editions to search in ``[ original, translated ]``
+- fields
+	- Defines in which fields to search
+	- Example: { "type" : "fields", "value" : ["header", "description"] }
+	- Default = [ header, description ]
+	- Parameters:
+		- ``value``: list of fields to search in ``[ header, description ]``
+- filter
+	- Includes the search queries from another filter. 
+	- Example: ``{ "type" : "filter", "value" : "filter:82512822dfe111e2a6d2001143dc2095" }``
+	- Parameters:
+		- ``value``: stream_id you want to in/exclude
 
-		- lang
-			Yields articles of only these languages
-			value	= language code of language, can be nl, fr, en, de
-			default	=  all possible languages 
-			Example: { "type" : "lang", "value" : [ "nl" ] }
-		- translate
-			Defines to search in the original or translated text (or both).
-			value	= list of text editions to search in [ original, translated ]
-			default = [original]
-			Example: { "type" : "translate", "value" : ["original", "translated"] }
-		- fields
-			Defines in which fields to search
-			value	= list of fields to search in [ header, description ]
-			default = [ header, description ]
-			Example: { "type" : "fields", "value" : ["header", "description"] }
-		- filter
-			Includes the search queries from another filter. 
-			value	= stream_id you want to in/exclude
-			Example: { "type" : "filter", "value" : "filter:82512822dfe111e2a6d2001143dc2095" }
-
-	filter.delete_subscription
-		Use this method to unsubscribe a filter. Unused filters will be deleted.
-		The following url will unsubscribe the authenticated user from a filter.
-		https://newsroom.owlin.com/api/v1/filter.delete_subscription/82512822dfe111e2a6d2001143dc2095?access_key=[access_key]&nonce=[nonce]&time=[time]
-
-	generate_secret:
-		Use this method to generate a new secret key.
-		The following url will unsubscribe the authenticated user from a filter.
-		https://newsroom.owlin.com/api/v1/filter.delete_subscription/82512822dfe111e2a6d2001143dc2095?access_key=[access_key]&nonce=[nonce]&time=[time]
-		
-		Your application is supposed to store the secret key once, only regenerate whenever your key has been expired or deactivated.
-		You should never transfer your secret key within your request.
-	
-
-## stream_id options:	
+### stream_id options:	
 The required value parameter for the ``get_articles`` and ``stats`` methods is a stream_id associated to a search. The stream_id can take several different forms:
 
 - filter:filter_id
@@ -207,8 +208,7 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 	- Will return all articles merged from a group of filters		
 
 
-
-## Undocumented methods:
+# Undocumented methods:
 - user_info
 - invite.email
 - signup.token

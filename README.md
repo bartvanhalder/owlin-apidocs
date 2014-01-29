@@ -245,7 +245,8 @@ The following url will create a token to create a new user account:
     "user_id": false,
     "created": 1390989876.013,
     "email": ""
-  }```
+  }
+```
 
 ============
 

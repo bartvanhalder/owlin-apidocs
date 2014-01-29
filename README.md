@@ -10,6 +10,12 @@
 - [API Methods](#api_methods)
 	- [get_articles](#get_articles)
 	- [stats](#stats)
+- [filter.get](#filter-get)
+- [filter.save](#filter-save)
+- [invite.generate_token](#invite-generate_token)
+- [signup.token](#signup-token)
+- [signup](#signup)
+- [password.update](#password-update)
 - [Undocumented Methods](#undocumented-methods)
 	
 ======================

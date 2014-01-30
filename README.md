@@ -55,9 +55,9 @@ typeof callback_function_name === 'function' && callback_function_name({ /* .. y
 ### Authentication
 Almost every request requires authentication. It is a two-step process. 
 
-##### 1. Firstly, you request a secret_key. 
-Each time you request a secret_key a new session is started. 
-You request a secret_key using the method generate_secret. The method requires 2 parameters, ``email`` and ``password``. If you are using the newsroom, you can use the same credentials here. 
+##### 1. Generate a secret_key. 
+Each time you generate a secret_key a new session is started. 
+To generate a secret_key use the method generate_secret. The method requires 2 parameters, ``email`` and ``password``. If you are a newsroom user, you should use the same credentials here. 
 
 The required url is:
 ``https://newsroom.owlin.com/api/v1/generate_secret?email=email@example.com&password=password``
@@ -65,7 +65,7 @@ The required url is:
 **Minimize the number of sessions! Generate the secret key only when necessary and store it in your database. 
 This is because every time you generate a secret key, a new session is started and your password is sent over the internet. This is less secure, even though https encryption is used.**
 
-##### 2. Hash the secret key to generate an access key
+##### 2. Generate an access key
 Authenticating all api requests in a session requires the following parameters:
 	- access_key
 	- session_id

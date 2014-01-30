@@ -45,6 +45,11 @@ The API will always respond JSON.
 ##### JSONP Callbacks
 To request a JSONP Callback from the API, to be used for instance in javascript, use ``?callback=callback_function_name``
 
+**Output example:**
+```javascript
+typeof callback_function_name === 'function' && callback_function_name({ /* .. your data .. */ })
+```
+
 ==============
 
 ### Authentication
@@ -94,25 +99,54 @@ The following url will return all articles from the Apple filter with the filter
 The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of a stream_id. For different stream_id options see the stream_id options paragraph in the description of the facets method. 
 		
 ##### Additional parameters:
-- hits
+- ``hits``
  - default: 25
  - number between 0 and 200 
  - Using the hits parameter you can change the amount of articles returned	
-- sort
+- ``sort``
+	- Using the 'sort' parameter you can define in which manner the articles are be sorted.	
 	- default: scored:desc
 	- Value can be 
 		- decaying_activity
 		- activity
 		- epoch
-	- Using the 'sort' parameter you can define in which manner the articles are be sorted.	
-		- from 
-			- default: time - 2 weeks 	
-			- number representing scored, score, epoch depending on the method of sorting. 
-			- Using the 'from' parameters, you can define the minimal value of the range within which the articles are sorted.
-		- to 
-			- default: none
-			- number representing scored, score, epoch depending on the method of sorting.
-			- Using the 'to' parameter, you can define the maximum value of the range within which the articles are sorted.
+- ``range``
+	- Use the range parameter to filter out articles over a specific time or ranking range. The value is an object with the key you want to filter on, followed by a ``from`` and/or ``to`` field. Like:
+```javascript
+range = {“epoch":{"from":1389861184,"to":1391070784}}
+```
+	- By default, the range goes from 2 weeks ago to the current time.
+	- Other fields you can set a range to are:
+		- decaying_activity
+		- activity
+		- epoch
+- ``group_by``	
+	- Using the group_by parameter, you can filter the results on unique values for that field. Saying ``group_by=topic`` will return you a list of only unique topics.
+	- Fields you can group by are:
+		- topic
+		- none
+	- ``stats``
+		- If you set this value to ``true``, we will apply the [stats method](#stats) to each topic in the results on the key ``stats``.
+
+##### Output
+```javascript
+[
+    {
+      "url": "http://thenextweb.com/twitter/2014/01/30/the-original-owner-of-n-still-hasnt-got-his-twitter-account-back-someone-else-snapped-it-up/",
+      "topic": "1b2b4384c061442e78e0d89363d1d482",
+      "epoch": 1391068768,
+      "decaying_activity": 1391068768,
+      "urlhash": "f760702ee6a5a81cf515d6f29d6cfc32",
+      "header": "The original owner of @N still hasn’t got his Twitter account back – someone else snapped it up",
+      "topic_epoch": 1390986023,
+      "activity": 0,
+      "domain": "thenextweb.com",
+      "language": "en",
+      "read": false
+    }
+	/* .. truncated ..*/
+]
+```
 
 ============
 
@@ -125,16 +159,30 @@ The following url will return an array with amount of articles posted per minute
 *As for the get_article method the value parameter is a stream_id.*
 
 #### Additional parameters:
-- interval
+- ``interval``
 	- default: ``60``
 	- number of seconds, length of the binning time intervals. 
 	- Using the 'interval' parameter you can define the amount of seconds to group the statistics on.
-- date_from
-	- default: ``epoch(time - 2 weeks ago)``
+- ``date_from``
 	- Using the 'from' parameter you can define the begin date in epoch to select the articles from.
-- date_to
-	- default: ``now``
+	- default: ``epoch(time - 2 weeks ago)``
+- ``date_to``
 	- Using the 'date_to' parameter you can define the end range of the statistics. Based on article publish date.
+	- default: ``now``
+
+##### Output
+```javascript
+[
+	/* … truncated … */
+	{
+		"key": 1382400000,
+		"count": 55163
+	},
+	{
+		"key": 1391040000,
+		"count": 97
+	}
+]```
 
 ============
 
@@ -192,14 +240,14 @@ Pass the value ``new``  to create a new filter.
 Pass the filter_id in the ``value`` parameter in order to save an existing filter. This requires permissions to edit this filter.
 		
 ##### Advanced parameters:
-- title
+- ``title``
 	- Defines the title for the filter
 	- This field is required
-- alert
+- ``alert``
 	- Sends an email to the user whenever a new article matches the filter
 	- Default: false
-- rules
-- Define here on what queries your filter should search. Read more about rules [here](#filter-rules)
+- ``rules``
+	- Define here on what queries your filter should search. Read more about rules [here](#filter-rules)
 
 ##### Example output:
 ```javascript
@@ -289,7 +337,7 @@ The following URL will create a new user account
 - ``invite_token``
 	- Your invite token you generated before using the [invite.generate_token function](#invitegenerate_token)
 
-##### Example output:
+##### Output:
 ```javascript
 {
     "secret_key": "voqiwzxhmcnswgnhtkmvqegbulalmsib",
@@ -375,6 +423,7 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 	- Will return all articles merged from a group of filters		
 
 # Undocumented methods:
+The following methods exist but are not documented yet, if you have any questions about this, please contact richard@owlin.com or browse [the Owlin newsroom](https://newsroom.owlin.com)’s browser console network log. 
 - user_info
 - invite.email
 - group.get
@@ -384,7 +433,6 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 - password.reset
 - change_password
 - highlight
-- es_query
 - read.get
 - read.save
 	

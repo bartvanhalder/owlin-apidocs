@@ -74,12 +74,13 @@ Authenticating all api requests in a session requires the following parameters:
 You should generate a new access key for each API request you make, based on the secret_key which you created in the beginning of your session.
 You generate the access key by making a sha256 hash from your secret_key + nonce + time, where + implies concatenation.
 
-**Nonce** 
+##### Nonce
 The nonce variable is a random string. 
 You should generate a different nonce for each request.
 
-**Time**
+##### Time
 Time is the unix timestamp in seconds evaluated at the moment of generating the key.
+
 
 Summarizing, your access key should look like this:
 ``access_key = sha256( secret_key + nonce + time )``
@@ -111,10 +112,7 @@ The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of
 		- activity
 		- epoch
 - ``range``
-	- Use the range parameter to filter out articles over a specific time or ranking range. The value is an object with the key you want to filter on, followed by a ``from`` and/or ``to`` field. Like:
-```javascript
-range = {“epoch":{"from":1389861184,"to":1391070784}}
-```
+	- Use the range parameter to filter out articles over a specific time or ranking range. The value is an object with the key you want to filter on, followed by a ``from`` and/or ``to`` field. Like: ``range = {"epoch":{"from":1389861184,"to":1391070784}}``
 	- By default, the range goes from 2 weeks ago to the current time.
 	- Other fields you can set a range to are:
 		- decaying_activity
@@ -182,7 +180,8 @@ The following url will return an array with amount of articles posted per minute
 		"key": 1391040000,
 		"count": 97
 	}
-]```
+]
+```
 
 ============
 
@@ -402,7 +401,7 @@ When saving the filter, you can attach rules to the must and must_not parameters
 		- ``value``: list of text editions to search in ``[ original, translated ]``
 - fields
 	- Defines in which fields to search
-	- Example: { "type" : "fields", "value" : ["header", "description"] }
+	- Example: ``{ "type" : "fields", "value" : ["header", "description"] }``
 	- Default = [ header, description ]
 	- Parameters:
 		- ``value``: list of fields to search in ``[ header, description ]``

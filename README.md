@@ -21,10 +21,10 @@
 ======================
 
 ### URL Scheme
-The Owlin request url of the Owlin API is constructed as follows,
+The request url of the Owlin API is constructed as follows,
 
 #### Input / Sending data:
-Both GET an POST are supported for the same type of requests. However, whenever an extra-parameter is longer than 1024 bytes, you should use POST headers.
+Both GET and POST are supported for the same type of requests. However, whenever an extra-parameter is longer than 1024 bytes, you should use POST headers.
 
 ##### For GET requests with e.g. 2 parameters:
 ``https://newsroom.owlin.com/api/v1/method/value?extra-parameter_1=extra-value_2&extra-parameter_2=extra-value_2``
@@ -33,7 +33,7 @@ Both GET an POST are supported for the same type of requests. However, whenever 
 ``https://newsroom.owlin.com/api/v1/method``
 ``value=value&extra-parameter=extra-value``
 
-The value parameter is optional in general, both for POST and GET requests, some methods however require a certain value to be set. 
+The value parameter is optional for most methods, both for POST and GET requests. Some methods however require a certain value to be set. 
 
 ##### Multi-dict parameters
 When a method requires a dictionary as an extra-value, encode it as JSON and add two brackets behind [extra-parameter] i.e.
@@ -76,7 +76,7 @@ You generate the access key by making a sha256 hash from your secret_key + nonce
 
 ##### Nonce
 The nonce variable is a random string. 
-You should generate a different nonce for each request.
+**You should generate a different nonce for each request.**
 
 ##### Time
 Time is the unix timestamp in seconds evaluated at the moment of generating the key.
@@ -112,9 +112,9 @@ The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of
 		- activity
 		- epoch
 - ``range``
-	- Use the range parameter to filter out articles over a specific time or ranking range. The value is an object with the key you want to filter on, followed by a ``from`` and/or ``to`` field. Like: ``range = {"epoch":{"from":1389861184,"to":1391070784}}``
+	- Use the range parameter to filter out articles from a specific time or ranking range. The value is an object with the key you want to filter on, followed by a ``from`` and/or ``to`` field. Like: ``range = {"epoch":{"from":1389861184,"to":1391070784}}``
 	- By default, the range goes from 2 weeks ago to the current time.
-	- Other fields you can set a range to are:
+	- Fields of which you can set a range are:
 		- decaying_activity
 		- activity
 		- epoch

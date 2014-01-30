@@ -106,12 +106,12 @@ The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of
  - Using the hits parameter you can change the amount of articles returned	
 - ``sort``
 	- The 'sort' parameter determines the way articles are sorted.	
-	- default: scored:desc
+	- The sorting order is always descending.
+	- default: decaying_activity
 	- Value can be 
-		- decaying_activity:desc
-		- activity:desc
-		- epoch:desc
-		- the above combinations with asc
+		- decaying_activity
+		- activity
+		- epoch
 - ``range``
 	- Use the range parameter to filter out articles from a specific time or ranking range. The value is an object with the key you want to filter on, followed by a ``from`` and/or ``to`` field. Like: ``range = {"epoch":{"from":1389861184,"to":1391070784}}``
 	- By default, the range goes from 2 weeks ago to the current time.

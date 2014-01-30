@@ -69,11 +69,8 @@ This is because every time you generate a secret key, a new session is started a
 Authenticating all api requests in a session requires the following parameters:
 	
 	- access_key
-	
 	- session_id
-	
 	- nonce
-	
 	- time
 
 ##### Nonce

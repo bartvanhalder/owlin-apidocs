@@ -191,7 +191,7 @@ Use this method to get filters by their ids.
 
 This method always returns the title of the filter, the alert settings, last modified, created, creator and if you are allowed acces it also gives the search rules which determine the filter's output.  
 The following url will return a list with the contents of the apple filter
-``https://newsroom.owlin.com/api/v1/filter.get_filter_by_ids/82512822dfe111e2a6d2001143dc2095?access_key=access_key&nonce=nonce&time=time``
+``https://newsroom.owlin.com/api/v1/filter.get/82512822dfe111e2a6d2001143dc2095?session_id=session_id&access_key=access_key&nonce=nonce&time=time``
 
 ##### Multiple filters:
 Separate multiple filter_ids by commas
@@ -231,7 +231,7 @@ This method has no advanced options.
 Use this method to create or edit a filter.
 
 The following url will create a filter searching for apple:
-``https://newsroom.owlin.com/api/v1/filter.save/new?title=Apple&rules[]=[{“type":"search","value":"apple"}]&access_key=access_key&nonce=nonce&time=time``
+``https://newsroom.owlin.com/api/v1/filter.save/new?title=Apple&rules[]=[{“type":"search","value":"apple"}]&session_id=session_id&access_key=access_key&nonce=nonce&time=time``
 		
 **Creating a new filter**
 Pass the value ``new``  to create a new filter.
@@ -272,11 +272,40 @@ Pass the filter_id in the ``value`` parameter in order to save an existing filte
 ``` 		
 ============
 
+
+### generate_secret
+Start a new session to generate a secret key, to use for authentication. Read the [authentication section](#authentiction) section to know more about the usage of secret keys.
+
+The following url will return a freshly generated secret key to you:
+``https://newsroom.owlin.com/api/v1/generate_secret?email=email@example.com&password=password``
+
+**Minimize the number of sessions! Generate the secret key only when necessary and store it in your database. 
+This is because every time you generate a secret key, a new session is started and your password is sent over the internet. This is less secure, even though https encryption is used.**
+
+##### Advanced parameters:
+This method has no advanced options.
+
+##### Example output
+```javascript
+{
+    "secret_key": "qhduspongebobxxjnyijsquarepantsy",
+    "session_id": "bzljgctjpatrickpprexafzaszdfvoxl",
+    "creation_date": 1391115255,
+    "last_used_date": 1391115255,
+    "user_id": "7e7eecc0534611e2bc97001143dc2095",
+    "server_time": 1391115255
+}
+```
+**To read more about the implementation of secret keys, see the [authentication section](#authentication).**
+
+
+============
+
 ### invite.generate_token
 Generate a token you can use to create a new user account. 
 
 The following url will create a token to create a new user account:
-``https://newsroom.owlin.com/api/v1/invite.generate_token?access_key=access_key&nonce=nonce&time=time``
+``https://newsroom.owlin.com/api/v1/invite.generate_token?session_id=session_id&access_key=access_key&nonce=nonce&time=time``
 
 **Note: This method is not available to everyone and will be activated upon request.** 
 **Note: Signup tokens expire after 60 days**
@@ -324,7 +353,7 @@ This method has no advanced options.
 This creates a new user account you can use to login into the newsroom or make API requests with.
 
 The following URL will create a new user account
-``https://newsroom.owlin.com/api/v1/signup?name=Luke%20Skywalker&email=luke.skywalker@jediorder.gov&password=usetheforce111&phone=063FE4823&invite_token=swysriumctlbfbpecxlshhwysfhtelxx&access_key=access_key&nonce=nonce&time=time``
+``https://newsroom.owlin.com/api/v1/signup?name=Luke%20Skywalker&email=luke.skywalker@jediorder.gov&password=usetheforce111&phone=063FE4823&invite_token=swysriumctlbfbpecxlshhwysfhtelxx&session_id=session_id&access_key=access_key&nonce=nonce&time=time``
 
 - ``name``
 	- Your name
@@ -355,7 +384,7 @@ The following URL will create a new user account
 This allows you to change the password for your user account when you still remember the old password.
 
 The following url will change your password:
-``https://newsroom.owlin.com/api/v1/password.update?old_password=usetheforce111&new_password=I_miss_my_dad82&access_key=access_key&nonce=nonce&time=time``
+``https://newsroom.owlin.com/api/v1/password.update?old_password=usetheforce111&new_password=I_miss_my_dad82&session_id=session_id&access_key=access_key&nonce=nonce&time=time``
 
 - ``old_password``
 	- Please verify your old password for extra verification

@@ -62,7 +62,8 @@ You request a secret_key using the method generate_secret. The method requires 2
 The required url is:
 ``https://newsroom.owlin.com/api/v1/generate_secret?email=email@example.com&password=password``
 
-**Please keep the number of sessions to a minimum since for each new session you have send your password over the internet. Even though this happens in an encrypted manner (https) it is less secure. We highly recommend you to store this key into your database.**
+**Minimize the number of sessions! Generate the secret key only when necessary and store it in your database.** 
+This is because every time you generate a secret key, a new session is started and your password is sent over the internet. This is less secure, even though https encryption used.
 
 ##### 2. Hash the secret key to generate an access key
 Authenticating all api requests in a session requires the following parameters:

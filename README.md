@@ -75,7 +75,7 @@ Authenticating all api requests in a session requires the following parameters:
 	- time
 
 ##### Nonce
-The nonce variable is a random string. 
+The nonce variable is a random string, with a mimimum length of 32 characters.
 **You should generate a different nonce for each request.**
 
 ##### Time

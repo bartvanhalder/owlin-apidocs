@@ -482,7 +482,6 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 
 # Undocumented methods:
 The following methods exist but are not documented yet, if you have any questions about this, please contact richard@owlin.com or browse [the Owlin newsroom](https://newsroom.owlin.com)’s browser console network log. 
-- user_info
 - invite.email
 - group.get
 - group.save

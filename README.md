@@ -16,6 +16,7 @@
 	- [signup.token](#signuptoken)
 	- [signup](#signup)
 	- [password.update](#passwordupdate)
+	- [user_info](#user_info)
 - [Undocumented Methods](#undocumented-methods)
 	
 ======================

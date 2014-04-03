@@ -406,6 +406,29 @@ The following url will change your password:
 
 ============
 
+### user_info
+This allows you to retrieve information about the authenticated user, including it's name, email, phone number and license information.
+
+The following url will give you information about the authenticated user:
+``https://newsroom.owlin.com/api/v1/user_info?session_id=[session_id]&access_key=access_key&nonce=[nonce]&time=[time_used_in_access_key]``
+
+##### Example output:
+```javascript
+{
+	"email": "richard@owlin.com",
+	"id": "7e7eecc0534611e2bc97001143dc2095",
+	"license": 1,
+	"licensed": 4107684146,
+	"meta": {
+		"theme": "light"
+	},
+	"name": "Richard Kraaijenhagen",
+	"supplier": "owlin"
+}
+```
+
+============
+
 # General Definitions
 
 ### Filter Rules:

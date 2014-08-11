@@ -158,6 +158,8 @@ The following url will return an array with amount of articles posted per minute
 
 *As for the get_article method the value parameter is a stream_id.*
 
+*Nice to know: when the amount of articles within a given time-window equals zero, no results are given. *
+
 #### Additional parameters:
 - ``interval``
 	- default: ``60``

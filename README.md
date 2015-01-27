@@ -418,14 +418,14 @@ The following url will give you information about the authenticated user:
 ##### Example output:
 ```javascript
 {
-	"email": "richard@owlin.com",
+	"email": "wessel@owlin.com",
 	"id": "7e7eecc0534611e2bc97001143dc2095",
 	"license": 1,
 	"licensed": 4107684146,
 	"meta": {
 		"theme": "light"
 	},
-	"name": "Richard Kraaijenhagen",
+	"name": "Wessel Stoker",
 	"supplier": "owlin"
 }
 ```
@@ -483,7 +483,7 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 	- Will return all articles merged from a group of filters		
 
 # Undocumented methods:
-The following methods exist but are not documented yet, if you have any questions about this, please contact richard@owlin.com or browse [the Owlin newsroom](https://newsroom.owlin.com)’s browser console network log. 
+The following methods exist but are not documented yet, if you have any questions about this, please contact wessel@owlin.com or browse [the Owlin newsroom](https://newsroom.owlin.com)’s browser console network log. 
 - invite.email
 - group.get
 - group.save

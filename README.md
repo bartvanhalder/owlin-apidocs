@@ -2,7 +2,7 @@
 
 ##### Table of contents
 - [The URL Scheme](#url-scheme)
-	- [Input / Sending data](#input—sending-data)
+    - [Input / Sending data](#input—sending-data)
 	- [Output / Receiving data](#output—receiving-data)
 - [General definitions](#general_definitions)
 	- [filter rule definitions](#filter-rules)
@@ -12,6 +12,7 @@
 	- [stats](#stats)
 	- [filter.get](#filterget)
 	- [filter.save](#filtersave)
+        - [group.get](#groupget)
 	- [invite.generate_token](#invitegenerate_token)
 	- [signup.token](#signuptoken)
 	- [signup](#signup)
@@ -114,7 +115,7 @@ The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of
 		- activity
 		- epoch
 - ``range``
-	- Use the range parameter to filter out articles from a specific time or ranking range. The value is an object with the key you want to filter on, followed by a ``from`` and/or ``to`` field. Like: ``range = {"epoch":{"from":1389861184,"to":1391070784}}``
+	- Use the range parameter to filter out articles from a specific time or ranking range. The value is an object with the key you want to filter on, followed by a ``from`` and/or ``to`` field. Like: ``range = {"epoch":{"from":1389861184,"to":1391070784}}``.
 	- By default, the range goes from 2 weeks ago to the current time.
 	- Fields of which you can set a range are:
 		- decaying_activity
@@ -127,8 +128,10 @@ The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of
 		- none
 	- ``stats``
 		- If you set this value to ``true``, we will apply the [stats method](#stats) to each topic in the results on the key ``stats``.
+- ``fields``
+    - Using the fields parameter, you can select the return fields. Like: ``fields = ["header", "description"]`` or ``fields = ["topic", "epoch","language"]``.
 
-##### Output
+##### Output(without using the additional fields parameter):
 ```javascript
 [
     {
@@ -273,8 +276,44 @@ Pass the filter_id in the ``value`` parameter in order to save an existing filte
 	"alert": false
 }
 ``` 		
+
 ============
 
+### group.get
+Use this method to get groups by their ids.
+
+This method always returns the title of the group, creator, last modified, created and the associated stream_ids.
+The following url will return a object with the content of the indices group: ``https://newsroom.owlin.com/api/v1/group.get/fxqmqymkxn0mrlrmijodenoghizjunmk?session_id=[session_id]&access_key=[access_key]&nonce=[new_nonce]&time=[time_used_in_access_key]``
+
+##### Multiple groups:
+For each group, you need to do a separate group.get request.
+
+##### Advanced parameters:
+This method has no advanced options.
+
+##### Output:
+```javascript
+{
+    "group_id": "fxqmqymkxn0mrlrmijodenoghizjunmk",
+    "creator": "jpuqcl0cwhujk0tsdkjnjhoiwoersnku",
+    "stream_id": "group:fxqmqymkxn0mrlrmijodenoghizjunmk",
+    "title": "Indices",
+    "stream_ids": [
+        "filter:uxujqkjgcirmtrpqihchfyyxlknbdkkb",
+        "filter:uxxvzbkzxxrphjiostmwojundfijyhkl",
+        "filter:crvsblvhestbhbtidbbcizqwxeoowbrs",
+        "filter:kgvltbjlsguskwgmoombwubfbjycaetz",
+        "group:pnraopmjaahpgiufzznhonuergocmktr"
+    ],
+    "sort": "decaying_activity",
+    "created": 1421507167.365,
+    "edit": true,
+    "group_by": "topic",
+    "last_modified": 1421507167.365
+}
+```
+
+============
 
 ### generate_secret
 Start a new session to generate a secret key, to use for authentication. Read the [authentication section](#authentiction) section to know more about the usage of secret keys.
@@ -485,7 +524,6 @@ The required value parameter for the ``get_articles`` and ``stats`` methods is a
 # Undocumented methods:
 The following methods exist but are not documented yet, if you have any questions about this, please contact wessel@owlin.com or browse [the Owlin newsroom](https://newsroom.owlin.com)’s browser console network log. 
 - invite.email
-- group.get
 - group.save
 - group.add
 - group.remove
@@ -494,4 +532,3 @@ The following methods exist but are not documented yet, if you have any question
 - highlight
 - read.get
 - read.save
-	

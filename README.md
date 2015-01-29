@@ -129,7 +129,7 @@ The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of
 	- ``stats``
 		- If you set this value to ``true``, we will apply the [stats method](#stats) to each topic in the results on the key ``stats``.
 - ``fields``
-    - Using the fields parameter, you can select the return fields. Like: ``fields = ["header", "description"]`` or ``fields = ["topic", "epoch","language"]``.
+    - Using the fields parameter, you can select the return fields. Like: ``fields=["header","description"]`` or ``fields = ["topic","epoch","language"]``.
 
 ##### Output(without using the additional fields parameter):
 ```javascript

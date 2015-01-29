@@ -12,7 +12,7 @@
 	- [stats](#stats)
 	- [filter.get](#filterget)
 	- [filter.save](#filtersave)
-        - [group.get](#groupget)
+	- [group.get](group.get)
 	- [invite.generate_token](#invitegenerate_token)
 	- [signup.token](#signuptoken)
 	- [signup](#signup)

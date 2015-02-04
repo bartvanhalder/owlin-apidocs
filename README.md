@@ -37,9 +37,9 @@ Both GET and POST are supported for the same type of requests. However, whenever
 
 The value parameter is optional for most methods, both for POST and GET requests. Some methods however require a certain value to be set. 
 
-##### Multi-dict parameters
-When a method requires a dictionary as an extra-value, encode it as JSON and add two brackets behind [extra-parameter] i.e.
-``https://newsroom.owlin.com/api/v1/method/value?extra-parameter[]=extra-value``
+#####  NOTE: Object (e.g. list or hashmap) as parameter:  
+When a method requires a dictionary as an extra-parameter-value, encode it as JSON and add two brackets behind [extra-parameter-name] i.e.
+``https://newsroom.owlin.com/api/v1/method/value?extra-parameter-name[]=extra-parameter-value``
 
 #### Output / Receiving data:
 The API will always respond JSON.

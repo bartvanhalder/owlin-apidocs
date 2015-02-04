@@ -237,7 +237,7 @@ This method has no advanced options.
 Use this method to create or edit a filter.
 
 The following url will create a filter searching for apple:
-``https://newsroom.owlin.com/api/v1/filter.save/new?title=Apple&rules[]=[{“type":"search","value":"apple"}]&session_id=[session_id]&access_key=[access_key]&nonce=[new_nonce]&time=[time_used_in_access_key]``
+``https://newsroom.owlin.com/api/v1/filter.save/new?title=Apple&rules[]=[{"type":"search","value":"apple"}]&session_id=[session_id]&access_key=[access_key]&nonce=[new_nonce]&time=[time_used_in_access_key]``
 		
 **Creating a new filter**
 Pass the value ``new``  to create a new filter.

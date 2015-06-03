@@ -113,6 +113,7 @@ Having our personal search saved into the system is a nice achievement in itself
 ```python
 search_id = search_dict["id"]
 articles_response = requests.get("{0}/news-searches/{1}/articles".format(base_url,search_id), headers={"authorization": auth_token}).text
+articles_dict = json.loads(articles_response)
 ```
 The variable `articles_response` now contains a list of articles, as they are saved into our system.
 Each article contains fields like `title` and `description`, containing respectively its title and its full-text. It also contains a `topic_id`, which is shared among all the articles that talk about the same news within a two-days window. 

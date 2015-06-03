@@ -3,25 +3,33 @@
 This is a short quickstart guide to learn how to use our awesome new API.
 
 ### Table of contents
-- [The API domain](#apidomain)
+- [The REST API documentation](#apidocumentation)
+- [Get started](#getstarted)
 - [Getting an authorization token](#authtoken)
 - [Creating a new search](#newsearch)
 - [Retrieving the articles related to a search](#searcharticles)
 - [Retrieving the statistics related to a search](#searchstats)
 
-<div id='apidomain'/>
-### The API domain
-The Owlin API 2.0 online reference can be reached at the following URL: http://jsapi.devstar.owlin.com/documentation
+<div id='apidocumentation'/>
+### The REST API documentation
+The Owlin API 2.0 interactive reference documentation can be reached at the following URL: http://jsapi.devstar.owlin.com/documentation
 
 There you can:
 * find a detailed reference of the REST methods and their parameters
 * see the JSON schema to pass along the PUT, POST and PATCH calls
 * test all the methods directly from the browser!
 
-The code snippets below all assume you have these libraries installed and loaded, and the `base_url` variable to be declared as such:
+<div id='getstarted'/>
+### Get started
+All code snippets in this tutorial assume you have the following libraries installed and loaded:
 
 ```python
 import json, requests   # if you don't have requests installed, "pip install requests" will do
+```
+
+it is also assumed that you have declared the base_url variable declared as follows,
+
+```python
 base_url = "http://jsapi.devstar.owlin.com"
 ```
 

@@ -100,7 +100,7 @@ search_dict = json.loads(search_response)
 The keywords we used to define the search are divided between two tags: `should` and `should not`; the words in `should` are the ones we want in our articles, the ones in `should not` are the ones we would like to filter out. A single tag contains a list of rules.
 
 A rule is defined by:
-* a `match` field, whose value is a string with the minimum number of terms we want our rule to match. We can also use *"all"* if we want the rule to match all the terms. <sup>[1](#footnote1)</sup>
+* a `match` field, whose value is a string with the minimum number of terms we want our rule to match. We can also use *"all"* if we want the rule to match all the terms.<sup>[1](#footnote1)</sup>
 * a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single character and _*_ any sequence of characters. 
 * a `scope` field, with two boolean values that tell our back-end if to look for the specified expressions just in the title of the article, just in the body, or in both.  
 
@@ -145,10 +145,10 @@ topic_dict = json.loads(topic_response)
 ```
 Aside from the usual `id`, and a list of `article_id` sharing the specified topic contained in the `articles` field, the return object contains some slightly more cryptic fields:
 
+* `epoch` is the Unix timestamp<sup>[2](#footnote2)</sup> in which the article was published 
+* `buzz` is our proprietary ranking system, calculated on how often a news article is reported and on how quickly it spreads across the Web
 * `activity` askwillem
-* `buzz` askwillem
-* `epoch` askwillem
-* `latest` askwillem
+* `latest` is the timestamp in which an article referring to this topic was last spotted.
 
 
 
@@ -159,3 +159,5 @@ Aside from the usual `id`, and a list of `article_id` sharing the specified topi
 
 <div id="footnote1"/>
 <sup>1: Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.</sup>
+<div id="footnote2"/>
+<sup>2: http://www.unixtimestamp.com/</sup>

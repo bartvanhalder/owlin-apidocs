@@ -13,7 +13,6 @@ This is a short quickstart guide to learn how to use our awesome new API.
 <div id='apidocumentation'/>
 ### The REST API documentation
 The Owlin API 2.0 interactive reference documentation can be reached at the following URL:
-
 https://api.owlin.com/documentation
 
 There you can:

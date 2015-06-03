@@ -12,9 +12,7 @@ This is a short quickstart guide to learn how to use our awesome new API.
 
 <div id='apidocumentation'/>
 ### The REST API documentation
-The Owlin API 2.0 interactive reference documentation can be reached at the following URL:
-
-https://api.owlin.com/documentation
+The Owlin API 2.0 interactive reference documentation can be reached at the following URL: http://jsapi.devstar.owlin.com/documentation
 
 There you can:
 * find a detailed reference of the REST methods and their parameters
@@ -32,7 +30,7 @@ import json, requests   # if you don't have requests installed, "pip install req
 It is also assumed that you have declared and initialized the `base_url` variable:
 
 ```python
-base_url = "https://api.owlin.com/v2"
+base_url = "http://jsapi.devstar.owlin.com"
 ```
 
 <div id='authtoken'/>
@@ -59,7 +57,7 @@ Once we have the token, things start getting more interesting!
 Let's say, as an example, that we want to be up to date with the latest news related to the price fluctuations of some precious metals, namely gold, silver, platinum and palladium. Just typing in the keywords would not be specific enough, because while most of the articles containg the world "gold" are indeed related to the price of gold, Owlin would keep us up to date also about sport champions who just earned a gold medal, and freemium websites that just introduced a new gold membership.
 Don't forget, by the way, that our sources go well beyond the mainstream news outlets! 
 
-We then put together an example search, that you can see below.  For more information about the specific fields, don't forget to check the API 2.0 reference at the link above.
+We then put together an example search, that you can see below.  For more information about the single fields, don't forget to check the API 2.0 reference at the link above.
 
 ```python
 example_search = {
@@ -116,8 +114,8 @@ Having our personal search saved into the system is a nice achievement in itself
 search_id = search_dict["id"]
 articles_response = requests.get("{0}/news-searches/{1}/articles".format(base_url,search_id), headers={"authorization": auth_token}).text
 ```
-The variable `articles_response` now contains a 
-
+The variable `articles_response` now contains a list of articles, as they are saved into our system.
+Each article contains fields like `title` and `description`, containing respectively its title and its full-text. It also contains a `topic_id`, which is shared among all the articles that talk about the same news within a two-days window. For more informations, once again, refer to the API documentation.
 
 <div id='searchstats'/>
 ### Retrieving the statistics related to a search

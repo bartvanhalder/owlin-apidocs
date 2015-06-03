@@ -1,5 +1,4 @@
-## Owlin REST API 2.alpha
-## Python 2.7+ Walkthrough
+## Owlin REST API 2.alpha - Python 2.7+ Walkthrough
 
 This is a short quickstart guide to learn how to use our awesome new API.
 
@@ -90,13 +89,13 @@ search_dict = json.loads(search_response)
 The keywords we used to define the search are divided between two tags: `should` and `should not`; the words in `should` are the ones we want in our articles, the ones in `should not` are the ones we would like to filter out. A single tag contains a list of rules.
 
 A rule is defined by:
-* `match`, associated to a string with the minimum number of matching terms, which can also be set to *"all"* if you want all of them to appear in the filtered articles. Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.
-* a list of search expressions, each encoded as a string. **?** and **!** can be used as wildcards, where *?* represents any character and *!* any sequence of characters. 
-* two boolean values that tell our back-end if to look for the specified terms just in the title of the article, just in the body, or in both.  
+* a `match` field, whose value is a string with the minimum number of terms we want our rule to match. We can also use *"all"* if we want the rule to match all the terms. Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.
+* a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single character and _*_ any sequence of characters. 
+* a `scope` field, with two boolean values that tell our back-end if to look for the specified expressions just in the title of the article, just in the body, or in both.  
 
-We actually used wildcards in our example search: we wanted to match the words *market* and *markets*, but not the word *marketing*; we then added *market*\* under a *should* rule, and *marketing* under a *should not* rule.
+We actually used wildcards in our example search: we wanted to match the words *market* and *markets*, but not the word *marketing*; we then added *market*\* under a `should` rule, and *marketing* under a `should not` rule.
 
-The tags *includes* and *excludes* are used to chain searches: you can add there one or more search ids to expand on them.  The search ids are part of the object returned by the POST call, as we will see just now.
+The tags `includes` and `excludes` are used to chain searches: you can add there one or more search ids to expand on them.  The search ids are part of the object returned by the POST call, as we will see just now.
 
 <div id='searcharticles'/>
 ### Retrieving the articles related to a search
@@ -107,7 +106,7 @@ Having our personal search saved into the system is a nice achievement in itself
 search_id = search_dict["id"]
 articles_response = requests.get("{0}/news-searches/{1}/articles".format(base_url,search_id), headers={"authorization": auth_token}).text
 ```
-The variable *articles_response* now contains a 
+The variable `articles_response` now contains a 
 
 
 <div id='searchstats'/>

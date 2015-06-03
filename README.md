@@ -98,7 +98,7 @@ search_dict = json.loads(search_response)
 The keywords we used to define the search are divided between two tags: `should` and `should not`; the words in `should` are the ones we want in our articles, the ones in `should not` are the ones we would like to filter out. A single tag contains a list of rules.
 
 A rule is defined by:
-* a `match` field, whose value is a string with the minimum number of terms we want our rule to match. We can also use *"all"* if we want the rule to match all the terms.[->](#ANDOR)
+* a `match` field, whose value is a string with the minimum number of terms we want our rule to match. We can also use *"all"* if we want the rule to match all the terms. [†](#ANDOR)
 * a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single character and _*_ any sequence of characters. 
 * a `scope` field, with two boolean values that tell our back-end if to look for the specified expressions just in the title of the article, just in the body, or in both.  
 

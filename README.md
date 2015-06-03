@@ -1,6 +1,6 @@
 
 ![alt text](http://owlin.com/images/homelogo.png "Owlin")
-## Owlin REST API 2.alpha - Python 2.7+ Walkthrough
+## REST API 2.alpha - Python 2.7+ Walkthrough
 
 This is a short quickstart guide to learn how to use our awesome new API.
 

@@ -12,7 +12,7 @@ This is a short quickstart guide to learn how to use our awesome new API.
 
 <div id='apidocumentation'/>
 ### The REST API documentation
-The Owlin API 2.0 interactive reference documentation can be reached at the following URL: http://jsapi.devstar.owlin.com/documentation
+The Owlin API 2.0 interactive reference documentation can be reached at the following URL: https://api.owlin.com/documentation
 
 There you can:
 * find a detailed reference of the REST methods and their parameters
@@ -30,7 +30,7 @@ import json, requests   # if you don't have requests installed, "pip install req
 It is also assumed that you have declared and initialized the `base_url` variable:
 
 ```python
-base_url = "http://jsapi.devstar.owlin.com"
+base_url = "https://api.owlin.com/v2"
 ```
 
 <div id='authtoken'/>

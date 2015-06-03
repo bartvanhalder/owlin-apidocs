@@ -27,7 +27,7 @@ All code snippets in this tutorial assume you have the following libraries insta
 import json, requests   # if you don't have requests installed, "pip install requests" will do
 ```
 
-it is also assumed that you have declared the `base_url` variable as follows:
+It is also assumed that you have declared and initialized the `base_url` variable:
 
 ```python
 base_url = "http://jsapi.devstar.owlin.com"

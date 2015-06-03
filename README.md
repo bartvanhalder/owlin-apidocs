@@ -139,7 +139,7 @@ not working yet
 
 Once we lay our hands on a `topic_id`, we can get all sort of useful information about a specific topic.
 ```python
-topic_id = articles_dict[0]["topic_id"]
+topic_id = articles_dict[0]["topic_id"]   # topic_id of the 1st matching article
 topic_response = requests.get("{0}/news-topics/{1}".format(base_url,topic_id), headers={"authorization": auth_token}).text
 topic_dict = json.loads(topic_response)
 ```

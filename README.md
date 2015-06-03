@@ -1,5 +1,7 @@
-# 101 
-## Owlin API 2.0 Alpha
+## Owlin REST API 2.alpha
+## Python 2.7+ Walkthrough
+
+This is a short quickstart guide to learn how to use our awesome new API.
 
 ### Table of contents
 - [The API domain](#apidomain)
@@ -8,20 +10,18 @@
 - [Retrieving the articles related to a search](#searcharticles)
 - [Retrieving the statistics related to a search](#searchstats)
 
-This is a short quickstart guide to learn how to use our awesome new API!
-
 <div id='apidomain'/>
 ### The API domain
 The Owlin API 2.0 online reference can be reached at the following URL: http://jsapi.devstar.owlin.com/documentation
 
-Here you can:
+There you can:
 * find a detailed reference of the REST methods and their parameters
 * see the JSON schema to pass along the PUT, POST and PATCH calls
 * test all the methods directly from the browser!
 
-The code snippets below all assume you have these libraries installed and loaded, and the *base_url* variable to be declared as such:
+The code snippets below all assume you have these libraries installed and loaded, and the `base_url` variable to be declared as such:
 
-```
+```python
 import json, requests   # if you don't have requests installed, "pip install requests" will do
 base_url = "http://jsapi.devstar.owlin.com"
 ```
@@ -31,7 +31,7 @@ base_url = "http://jsapi.devstar.owlin.com"
 
 The first thing to do is to get an authorization token, it can be done as follows:
 
-```
+```python
 user_data = {
   "pw": "your_password",
   "email": "your_email",
@@ -41,7 +41,7 @@ user_data = {
 auth_token = requests.post("{0}/tokens".format(base_url), data=json.dumps(user_data)).text
 ```
 
- We store the token in a variable, because it will be a parameter to all our successive REST calls; we assume *auth_token* to contain a valid token in all the following code.
+ We store the token in a variable, because it will be a parameter to all our successive REST calls; we assume `auth_token` to contain a valid token in all the following code.
  
 <div id='newsearch'/>
 ### Creating a new search
@@ -52,7 +52,7 @@ Don't forget, by the way, that our sources go well beyond the mainstream news ou
 
 We then put together an example search, that you can see below.  For more information about the single fields, don't forget to check the API 2.0 reference at the link above.
 
-```
+```python
 example_search = {
   "title": "Precious metals",                                   
   "article_languages": ["en", "nl", "de", "fr", "es", "pl"],
@@ -83,14 +83,14 @@ example_search = {
   "permissions": {}
 }
 
-search_response = requests.post("http://jsapi.devstar.owlin.com:80/news-searches", data=json.dumps(example_search), headers={"authorization": auth_token}).text
+search_response = requests.post("{0}/news-searches".format(base_url), data=json.dumps(example_search), headers={"authorization": auth_token}).text
 search_dict = json.loads(search_response)
 ```
 
-The keywords we used to define the search are divided between two tags: **should** and **should not**; the words in *should* are the ones we want in our articles, the ones in *should not* are the ones we would like to filter out. A single tag contains a list of rules.
+The keywords we used to define the search are divided between two tags: `should` and `should not`; the words in `should` are the ones we want in our articles, the ones in `should not` are the ones we would like to filter out. A single tag contains a list of rules.
 
 A rule is defined by:
-* a string with the minimum number of matching terms, which can also be set to *"all"* if you want all of them to appear in the filtered articles. Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.
+* `match`, associated to a string with the minimum number of matching terms, which can also be set to *"all"* if you want all of them to appear in the filtered articles. Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.
 * a list of search expressions, each encoded as a string. **?** and **!** can be used as wildcards, where *?* represents any character and *!* any sequence of characters. 
 * two boolean values that tell our back-end if to look for the specified terms just in the title of the article, just in the body, or in both.  
 
@@ -103,7 +103,7 @@ The tags *includes* and *excludes* are used to chain searches: you can add there
 
 Having our personal search saved into the system is a nice achievement in itself, but we may as well be interested in getting some actual content. The first step, as suggested above, is to extract the *id* of the search we just created from the output of the POST call.
 
-```
+```python
 search_id = search_dict["id"]
 articles_response = requests.get("{0}/news-searches/{1}/articles".format(base_url,search_id), headers={"authorization": auth_token}).text
 ```
@@ -113,7 +113,7 @@ The variable *articles_response* now contains a
 <div id='searchstats'/>
 ### Retrieving the statistics related to a search
 
-```
+```python
 bucket = "monthly"
 stats_json = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), headers={"authorization": auth_token})
 ```

@@ -9,6 +9,7 @@ This is a short quickstart guide to learn how to use our awesome new API.
 - [Creating a new search](#newsearch)
 - [Retrieving the articles related to a search](#searcharticles)
 - [Retrieving the statistics related to a search](#searchstats)
+- [Retrieving information about a topic](#topic)
 
 <div id='apidocumentation'/>
 ### The REST API documentation
@@ -129,6 +130,8 @@ stats_response = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,
 stats_dict = json.loads(stats_response)
 ```
 
+<div id='topic'/>
+### Retrieving information about a topic
 ```python
 topic_id = articles_dict[0]["topic_id"]
 topic_response = requests.get("{0}/news-topics/{1}".format(base_url,topic_id), headers={"authorization": auth_token}).text

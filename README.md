@@ -130,6 +130,8 @@ stats_response = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,
 stats_dict = json.loads(stats_response)
 ```
 
+not working yet
+
 <div id='topic'/>
 ### Retrieving information about a topic
 
@@ -141,7 +143,10 @@ topic_dict = json.loads(topic_response)
 ```
 Aside from the usual `id`, and a list of `article_id` sharing the specified topic contained in the `articles` field, the return object contains some slightly more cryptic fields:
 
-* `activity` test
-* `buzz` test
-* `epoch` test
-* `latest` test
+* `activity` askwillem
+* `buzz` askwillem
+* `epoch` askwillem
+* `latest` askwillem
+
+<div id='Footnotes'/>
+### Footnotes

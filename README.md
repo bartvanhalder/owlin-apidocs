@@ -59,7 +59,7 @@ Once we have the token, things start getting more interesting!
 Let's say, as an example, that we want to be up to date with the latest news related to the price fluctuations of some precious metals, namely gold, silver, platinum and palladium. Just typing in the keywords would not be specific enough, because while most of the articles containg the world "gold" are indeed related to the price of gold, Owlin would keep us up to date also about sport champions who just earned a gold medal, and freemium websites that just introduced a new gold membership.
 Don't forget, by the way, that our sources go well beyond the mainstream news outlets! 
 
-We then put together an example search, that you can see below.  For more information about the single fields, don't forget to check the API 2.0 reference at the link above.
+We then put together an example search, that you can see below.  For more information about the specific fields, don't forget to check the API 2.0 reference at the link above.
 
 ```python
 example_search = {

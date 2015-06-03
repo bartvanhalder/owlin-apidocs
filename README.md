@@ -133,7 +133,7 @@ stats_dict = json.loads(stats_response)
 <div id='topic'/>
 ### Retrieving information about a topic
 
-Once we lay our hands on a topic_id, we can get all sort of useful information about a specific topic.
+Once we lay our hands on a `topic_id`, we can get all sort of useful information about a specific topic.
 ```python
 topic_id = articles_dict[0]["topic_id"]
 topic_response = requests.get("{0}/news-topics/{1}".format(base_url,topic_id), headers={"authorization": auth_token}).text
@@ -141,7 +141,7 @@ topic_dict = json.loads(topic_response)
 ```
 Aside from the usual `id`, and a list of `article_id` sharing the specified topic contained in the `articles` field, the return object contains some slightly more cryptic fields:
 
-*`activity`
-*`buzz`
-*`epoch`
-*`latest`
+* `activity` test
+* `buzz` test
+* `epoch` test
+* `latest` test

@@ -1,7 +1,7 @@
 # Owlin API 2.0 tutorial
 
 ### Table of contents
-- [API url](#apiurl)
+- [The API domain](#apidomain)
 - [Getting an authorization token](#authtoken)
 - [Creating a new search](#newsearch)
 - [Retrieving the articles related to a search](#searcharticles)
@@ -9,20 +9,21 @@
 
 This is a short quickstart guide to learn how to use our awesome new API!
 
-<div id='apiurl'/>
-###API URL
+<div id='apidomain'/>
+### The API domain
+The Owlin API 2.0 online reference can be reached at the following URL: http://jsapi.devstar.owlin.com/documentation
 
-The Owlin API 2.0 online reference can be reached at the following URL:
-
-```
-base_url = "http://jsapi.devstar.owlin.com"
-```
 Here you can:
 * find a detailed reference of the REST methods and their parameters
 * see the JSON schema to pass along the PUT, POST and PATCH calls
 * test all the methods directly from the browser!
 
-The code snippets below all assume the *base_url* variable to be declared as above.
+The code snippets below all assume you have these libraries installed and loaded, and the *base_url* variable to be declared as such:
+
+```
+import json, requests   # if you don't have requests installed, "pip install requests" will do
+base_url = "http://jsapi.devstar.owlin.com"
+```
 
 <div id='authtoken'/>
 ###Getting an authorization token
@@ -85,11 +86,14 @@ search_response = requests.post("http://jsapi.devstar.owlin.com:80/news-searches
 search_dict = json.loads(search_response)
 ```
 
-The keywords we used to define the search are divided between two tags: *should* and *should not*; the names are pretty self-explanatory.
+The keywords we used to define the search are divided between two tags: **should** and **should not**; the words in *should* are the ones we want in our articles, the ones in *should not* are the ones we would like to filter out. A single tag can contain multiple rules, in the form of a list.
 
-A rule is defined by a minimum number of matching terms (can be set to "all" too!), a list of search terms, two boolean values that tell our back-end if to look for the specified terms just in the title of the article, just in the body, or in both.  Note that you can have multiple rules within the *should* or the *should not* tag.
+A rule is defined by:
+* a string with the minimum number of matching terms, which can also be set to *"all"* if you want all of them to appear in the filtered articles. Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.
+* a list of search expressions, each encoded as a string. **?** and **!** can be used as wildcards, where *?* represents any character and *!* any sequence of characters. 
+* two boolean values that tell our back-end if to look for the specified terms just in the title of the article, just in the body, or in both.  
 
-While defining the keywords withing each tag you can use the asterisk within a word as a *wildcard*: it will match with any amount of characters of any sort.  In our example, we wanted to match the words *market* and *markets*, but not the word *marketing*; we then added *market*\* under a *should* rule, and *marketing* under a *should not* rule.
+We actually used wildcards in our example search: we wanted to match the words *market* and *markets*, but not the word *marketing*; we then added *market*\* under a *should* rule, and *marketing* under a *should not* rule.
 
 The tags *includes* and *excludes* are used to chain searches: you can add there one or more search ids to expand on them.  The search ids are part of the object returned by the POST call, as we will see just now.
 
@@ -100,7 +104,7 @@ Having our personal search saved into the system is a nice first step, but we ma
 
 ```
 search_id = search_dict["id"]
-articles_json = requests.get("{0}/news-searches/{1}/articles".format(base_url,search_id), params={} ,headers={"authorization": auth_token})
+articles_json = requests.get("{0}/news-searches/{1}/articles".format(base_url,search_id), headers={"authorization": auth_token})
 ```
 
 
@@ -109,5 +113,5 @@ articles_json = requests.get("{0}/news-searches/{1}/articles".format(base_url,se
 
 ```
 bucket = "monthly"
-stats_json = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), params={} ,headers={"authorization": auth_token})
+stats_json = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), headers={"authorization": auth_token})
 ```

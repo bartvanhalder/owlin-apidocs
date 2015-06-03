@@ -155,7 +155,7 @@ Aside from the usual `id`, and a list of `article_id` sharing the specified topi
 ***
 
 <div id='Footnotes'/>
-### Footnotes
+#### Footnotes
 
 <a name="footnote1"><sup>1:</sup></a>
 <sup>Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.</sup>

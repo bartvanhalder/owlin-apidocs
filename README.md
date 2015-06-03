@@ -115,7 +115,9 @@ search_id = search_dict["id"]
 articles_response = requests.get("{0}/news-searches/{1}/articles".format(base_url,search_id), headers={"authorization": auth_token}).text
 ```
 The variable `articles_response` now contains a list of articles, as they are saved into our system.
-Each article contains fields like `title` and `description`, containing respectively its title and its full-text. It also contains a `topic_id`, which is shared among all the articles that talk about the same news within a two-days window. For more informations, once again, refer to the API documentation.
+Each article contains fields like `title` and `description`, containing respectively its title and its full-text. It also contains a `topic_id`, which is shared among all the articles that talk about the same news within a two-days window. 
+
+For more information, once again, refer to the API documentation.
 
 <div id='searchstats'/>
 ### Retrieving the statistics related to a search
@@ -123,4 +125,10 @@ Each article contains fields like `title` and `description`, containing respecti
 ```python
 bucket = "monthly"
 stats_json = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), headers={"authorization": auth_token})
+```
+
+```python
+topic_id = articles_dict[0]["topic_id"]
+topic_response = requests.get("{0}/news-topics/{1}".format(base_url,topic_id), headers={"authorization": auth_token}).text
+topic_dict = json.loads(topic_response)
 ```

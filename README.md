@@ -86,7 +86,7 @@ search_response = requests.post("http://jsapi.devstar.owlin.com:80/news-searches
 search_dict = json.loads(search_response)
 ```
 
-The keywords we used to define the search are divided between two tags: **should** and **should not**; the words in *should* are the ones we want in our articles, the ones in *should not* are the ones we would like to filter out. A single tag can contain multiple rules, in the form of a list.
+The keywords we used to define the search are divided between two tags: **should** and **should not**; the words in *should* are the ones we want in our articles, the ones in *should not* are the ones we would like to filter out. A single tag contains a list of rules.
 
 A rule is defined by:
 * a string with the minimum number of matching terms, which can also be set to *"all"* if you want all of them to appear in the filtered articles. Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.
@@ -100,12 +100,13 @@ The tags *includes* and *excludes* are used to chain searches: you can add there
 <div id='searcharticles'/>
 ### Retrieving the articles related to a search
 
-Having our personal search saved into the system is a nice first step, but we may as well be interested in getting some actual content. The first step, as suggested above, is to extract the id of the search we just created from the output of the POST call.
+Having our personal search saved into the system is a nice achievement in itself, but we may as well be interested in getting some actual content. The first step, as suggested above, is to extract the *id* of the search we just created from the output of the POST call.
 
 ```
 search_id = search_dict["id"]
-articles_json = requests.get("{0}/news-searches/{1}/articles".format(base_url,search_id), headers={"authorization": auth_token})
+articles_response = requests.get("{0}/news-searches/{1}/articles".format(base_url,search_id), headers={"authorization": auth_token}).text
 ```
+The variable *articles_response* now contains a 
 
 
 <div id='searchstats'/>

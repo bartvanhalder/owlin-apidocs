@@ -124,7 +124,8 @@ For more information, once again, refer to the API documentation.
 
 ```python
 bucket = "monthly"
-stats_json = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), headers={"authorization": auth_token})
+stats_response = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), headers={"authorization": auth_token})
+stats_dict = json.loads(stats_response)
 ```
 
 ```python

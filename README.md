@@ -66,18 +66,17 @@ We then put together an example search, that you can see below.  For more inform
 example_search = {
   "title": "Precious metals",                                   
   "article_languages": ["en", "nl", "de", "fr", "es", "pl"],
-  "keyword_language": "en",                                    
   "should": [
     {
       "match": "1",                                            
       "search": ["gold", "silver", "palladium", "platinum"],
-      "scope": {"title": True, "description": False}
+      "scope": {"english_title": True, "english_description": False}
     },
     {
       "match": "2",
       "search": ["price", "corporation", "stocks", "futures", "options", 
                  "bearish", "bullish", "commodit*", "market*", "mining", "analyst*"],
-      "scope": {"title": True, "description": True}
+      "scope": {"english_title": True, "english_description": True}
     }
   ],
   "should_not": [
@@ -85,7 +84,7 @@ example_search = {
       "match": "all",
       "search": ["medal*", "olympic*", "world cup", "championship*", "gold coast", "pendant", 
                  "necklace", "marketing", "jewel*", "gold membership", "silver membership"],
-      "scope": {"title": True, "description": True}
+      "scope": {"english_title": True, "english_description": True}
     }
   ],
   "includes": [],

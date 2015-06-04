@@ -90,7 +90,6 @@ example_search = {
   ],
   "includes": [],
   "excludes": [],
-  "permissions": {}
 }
 
 search_response = requests.post("{0}/news-searches".format(base_url), data=json.dumps(example_search), headers={"authorization": auth_token}).text

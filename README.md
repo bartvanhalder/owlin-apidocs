@@ -11,7 +11,6 @@ This is a short quickstart guide to learn how to use our awesome new API.
 - [Creating a new search](#newsearch)
 - [Retrieving the articles related to a search](#searcharticles)
 - [Retrieving the statistics related to a search](#searchstats)
-- [Retrieving information about a topic](#topic)
 - [Wrapping up](#wrappingup)
 
 <div id='apidocumentation'/>

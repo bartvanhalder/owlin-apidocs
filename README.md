@@ -12,6 +12,7 @@ This is a short quickstart guide to learn how to use our awesome new API.
 - [Retrieving the articles related to a search](#searcharticles)
 - [Retrieving the statistics related to a search](#searchstats)
 - [Retrieving information about a topic](#topic)
+- [Wrapping up](#wrappingup)
 
 <div id='apidocumentation'/>
 ### The REST API documentation
@@ -118,7 +119,7 @@ articles_response = requests.get("{0}/news-searches/{1}/articles".format(base_ur
 articles_dict = json.loads(articles_response)
 ```
 The variable `articles_response` now contains a list of articles, as they are saved into our system.
-Each article contains fields like `title` and `description`, containing respectively its title and its full-text. It also contains a `topic_id`, which is shared among all the articles that talk about the same news within a two-days window. 
+Each article contains fields like `title` and `description`, containing respectively its title and its full-text. It also contains a `topic_id`, which we will show you how to use in a little while.
 
 For more information, once again, refer to the API documentation.
 
@@ -136,6 +137,8 @@ not working yet
 <div id='topic'/>
 ### Retrieving information about a topic
 
+which is shared among all the articles that talk about the same news within a two-days window. 
+
 Once we lay our hands on a `topic_id`, we can get all sorts of useful information about a specific topic.
 ```python
 topic_id = articles_dict[0]["topic_id"]   # topic_id of the 1st matching article
@@ -149,7 +152,10 @@ Aside from the usual `id`, and a list of `article_id` sharing the specified topi
 * `activity` askwillem
 * `latest` is the timestamp in which an article referring to this topic was last spotted.
 
+<div id='wrappingup'/>
+### Wrapping up
 
+In this brief tutorial we have gone through some of the most important methods of our API. We hope to have been clear enough 
 
 ***
 

@@ -155,7 +155,12 @@ Aside from the usual `id`, and a list of `article_id` sharing the specified topi
 <div id='wrappingup'/>
 ### Wrapping up
 
-In this brief tutorial we have gone through some of the most important methods of our API. We hope to have been clear enough 
+In this brief tutorial we have gone through some of the most important methods of our API.
+You should now be able to create a search, get its result and play around with topics. Now it's up to you!
+Draw inspiration from the visualizations we created with our API, or come up with something totally new - as they use to say, the sky is the limit!
+
+Should you still have any questions, feel free to mail us at willem@owlin.com. :)
+
 
 ***
 

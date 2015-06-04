@@ -177,7 +177,7 @@ Should you still have any questions, feel free to mail us at support@owlin.com. 
 <div id="footnote1"/>
 <sup>1: Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.</sup>
 <div id="footnote2"/>
-<sup>2: If the original text is in English, the `english_title` and `english_description` fields will simply contain a copy of the original fields. The parameters are all optional, and they default to: `{title: True, description: True, english_title: False, english_description: False}`</sup>
+<sup>2: If the original text is in English, the `english_title` and `english_description` fields will simply contain a copy of the original fields. The parameters are all optional, and if none is specified they default to: `{title: True, description: True, english_title: False, english_description: False}`</sup>
 <div id="footnote3"/>
 <sup>3: http://www.unixtimestamp.com/</sup>
 <div id="footnote4"/>

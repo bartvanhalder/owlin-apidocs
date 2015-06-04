@@ -139,6 +139,8 @@ Since our statistics refer to time periods of constant length *(buckets)*, the f
 
 We also pass the `search_id` along, and what we get back is the number of articles matching that search that we gathered for each bucket, starting at th
 
+<sup>[3](#footnote3)</sup>
+
 <div id='topic'/>
 ### Retrieving information about a topic
 
@@ -152,7 +154,7 @@ topic_dict = json.loads(topic_response)
 ```
 Aside from the usual `id`, and a list of `article_id` sharing the specified topic contained in the `articles` field, the return object contains some slightly more cryptic fields:
 
-* `epoch` is the Unix timestamp<sup>[3](#footnote3)</sup> in which the article was published;
+* `epoch` is the Unix timestamp in which the article was published;
 * `activity` is our proprietary ranking system, calculated on how often a news article is reported and on how quickly it spreads across the Web. This can be used, for instance, if you would like to know which were the biggest stories over the past year;
 * `buzz` is obtained by simply adding the epoch to the activity score;
 * `latest` is the timestamp in which an article referring to this topic was last spotted.
@@ -161,10 +163,10 @@ Aside from the usual `id`, and a list of `article_id` sharing the specified topi
 ### Wrapping up
 
 In this brief tutorial we have gone through some of the most important methods of our API.
-You should now be able to create a search, get its result and play around with topics. Now it's up to you!
-Draw inspiration from the visualizations we created with our API, or come up with something totally new - as they use to say, the sky is the limit!
+You should now be able to create a search, get the resulting articles and play around with topics. Now it's up to you!
+Draw inspiration from the visualizations we created with our API<sup>[4](#footnote4)</sup>, or come up with something totally new - as they use to say, the sky is the limit!
 
-Should you still have any questions, feel free to mail us at willem@owlin.com. :-)
+Should you still have any questions, feel free to mail us at support@owlin.com. :-)
 
 
 ***
@@ -178,3 +180,6 @@ Should you still have any questions, feel free to mail us at willem@owlin.com. :
 <sup>2: If the original text is in English, the `english_title` and `english_description` fields will simply contain a copy of the original fields</sup>
 <div id="footnote3"/>
 <sup>3: http://www.unixtimestamp.com/</sup>
+<div id="footnote4"/>
+<sup>4: you can find them on https://owlin.github.io/</sup>
+

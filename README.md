@@ -128,13 +128,14 @@ For more information, once again, refer to the API documentation.
 <div id='searchstats'/>
 ### Retrieving the statistics related to a search
 
+We can get some statistics about the articles matching a search by using the following method:
+
 ```python
 bucket = "monthly"
 stats_response = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), headers={"authorization": auth_token})
 stats_dict = json.loads(stats_response)
 ```
-
-not working yet
+ 
 
 <div id='topic'/>
 ### Retrieving information about a topic

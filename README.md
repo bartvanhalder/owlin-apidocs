@@ -137,9 +137,9 @@ not working yet
 <div id='topic'/>
 ### Retrieving information about a topic
 
-which is shared among all the articles that talk about the same news within a two-days window. 
-
 Once we lay our hands on a `topic_id`, we can get all sorts of useful information about a specific topic.
+Loosely said, different articles share the same topic when they talk about the same news event. In other words, when our system analyzes multiple articles that share enough keywords, it groups them under the same `topic_id`.
+
 ```python
 topic_id = articles_dict[0]["topic_id"]   # topic_id of the 1st matching article
 topic_response = requests.get("{0}/news-topics/{1}".format(base_url,topic_id), headers={"authorization": auth_token}).text
@@ -159,7 +159,7 @@ In this brief tutorial we have gone through some of the most important methods o
 You should now be able to create a search, get its result and play around with topics. Now it's up to you!
 Draw inspiration from the visualizations we created with our API, or come up with something totally new - as they use to say, the sky is the limit!
 
-Should you still have any questions, feel free to mail us at willem@owlin.com. :)
+Should you still have any questions, feel free to mail us at willem@owlin.com. :-)
 
 
 ***

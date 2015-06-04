@@ -181,5 +181,5 @@ Should you still have any questions, feel free to mail us at support@owlin.com. 
 <div id="footnote3"/>
 <sup>3: http://www.unixtimestamp.com/</sup>
 <div id="footnote4"/>
-<sup>4: you can find them on https://owlin.github.io/</sup>
+<sup>4: you can find them on http://hack.owlin.com/</sup>
 

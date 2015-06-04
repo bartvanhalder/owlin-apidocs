@@ -101,7 +101,7 @@ The keywords we used to define the search are divided between two tags: `should`
 
 A rule is defined by:
 * a `match` field, whose value is a string with the minimum number of terms we want our rule to match. We can also use *"all"* if we want the rule to match all the terms.<sup>[1](#footnote1)</sup>
-* a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single (non empty) character and _*_ any sequence of characters, including the empty one. 
+* a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single (non empty) character and _*_ any sequence of characters, including the empty one. Another important feature is what we call *proximity search*: using `"{gold AND~4 price}"` as search expression will match with a sentence having the words *gold* and *price* with at most 3 words separating them;
 * a `scope` field, which tells our API where to look for the expressions, more specifically:
   * if `title` and/or `description` are set to True, it will look in the title and/or the body of the news articles, respectively;
   * if `english_title` and/or `english_description` are set to True, it will look for the expressions in the translated version of the title and/or the body. Our back-end translates every article to English!<sup>[2](#footnote2)</sup>

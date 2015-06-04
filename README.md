@@ -19,8 +19,8 @@ This is a short quickstart guide to learn how to use our awesome new API.
 The Owlin API 2.0 interactive reference documentation can be reached at the following URL: https://api.owlin.com/documentation
 
 There you can:
-* find a detailed reference of the REST methods and their parameters
-* see the JSON schema to pass along the PUT, POST and PATCH calls
+* find a detailed reference of the REST methods and their parameters;
+* see the JSON schema to pass along the PUT, POST and PATCH calls;
 * test all the methods directly from the browser!
 
 <div id='getstarted'/>
@@ -104,7 +104,7 @@ A rule is defined by:
 * a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single (non empty) character and _*_ any sequence of characters, including the empty one. 
 * a `scope` field, which tells our API where to look for the expressions, more specifically:
   * if `title` and/or `description` are set to True, it will look in the title and/or the body of the news articles, respectively;
-  * if `english_title` and/or `english_description` are set to True, it will look for the expressions in the translated version of the title and/or the body. This <sup>[2](#footnote2)</sup>
+  * if `english_title` and/or `english_description` are set to True, it will look for the expressions in the translated version of the title and/or the body. Our back-end translates every article to English!<sup>[2](#footnote2)</sup>
 
 We actually used wildcards in our example search: we wanted to match the words *market* and *markets*, but not the word *marketing*; we then added *market*\* under a `should` rule, and *marketing* under a `should not` rule.
 
@@ -137,11 +137,9 @@ epoch_to = 1433462400     # equivalent to midnight UTC of 05/06/2015
 stats_response = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), headers={"authorization": auth_token}, params={"from": epoch_from, "to": epoch_to})
 stats_dict = json.loads(stats_response)
 ```
-Since our statistics refer to time periods of constant length *(buckets)*, the first thing to do is to choose the size of the *bucket* we want to investigate.  The available values are `hourly`,`daily`,`weekly`,`monthly` and `yearly`. 
+Since our statistics refer to time periods of constant length *(buckets)*, the first thing to do is to choose the size of the *bucket* we want to investigate.  The available values are `hourly`,`daily`,`weekly`,`monthly` and `yearly`.  We can also choose a time window for our buckets, by specifying the values of the `from` and `to` parameters as Unix epochs.<sup>[3](#footnote3)</sup>
 
-We also pass the `search_id` along, and what we get back is the number of articles matching that search that we gathered for each bucket, starting at th
-
-<sup>[3](#footnote3)</sup>
+We then pass the `search_id` along, and what we get back is the number of articles matching that search that we gathered for each bucket, starting at `epoch_from` and ending at `epoch_to`.  
 
 <div id='topic'/>
 ### Retrieving information about a topic

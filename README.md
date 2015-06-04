@@ -66,7 +66,7 @@ output.flush();
 output.close();
 
 BufferedReader inputBuffer = new BufferedReader(
-               new InputStreamReader(connection.getInputStream())
+    new InputStreamReader(connection.getInputStream())
 );
 
 String inputLine;

@@ -128,10 +128,10 @@ The keywords we used to define the search are divided between two tags: `should`
 
 A rule is defined by:
 * a `match` field, whose value is a string with the minimum number of terms we want our rule to match. We can also use *"all"* if we want the rule to match all the terms.<sup>[1](#footnote1)</sup>
-* a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single (non empty) character and _*_ any sequence of characters, including the empty one. Another important feature is what we call *proximity search*: using `"{gold AND~4 price}"` as search expression will match with a sentence having the words *gold* and *price* with at most 4 words separating them;
+* a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single (non empty) character and _*_ any sequence of characters, including the empty one. Another important feature is what we call *proximity search*: using `"{gold silver AND~4 price value}"` as search expression will match with a sentence having one of the words before the *AND* separated by at most 4 words from one of the words after it. Note that you cannot use wildcards within a proximity search;
 * a `scope` field, which tells our API where to look for the expressions, more specifically:
-  * if `title` and/or `description` are set to True, it will look in the title and/or the body of the news articles, respectively;
-  * if `english_title` and/or `english_description` are set to True, it will look for the expressions in the translated version of the title and/or the body. Our back-end translates every article to English!<sup>[2](#footnote2)</sup>
+  * if `title` and/or `description` are set to true, it will look in the title and/or the body of the news articles, respectively;
+  * if `english_title` and/or `english_description` are set to true, it will look for the expressions in the translated version of the title and/or the body. Our back-end translates every article to English!<sup>[2](#footnote2)</sup>
 
 We actually used wildcards in our example search: we wanted to match the words *market* and *markets*, but not the word *marketing*; we then added *market*\* under a `should` rule, and *marketing* under a `should not` rule.
 
@@ -231,7 +231,7 @@ Should you still have any questions, feel free to mail us at support@owlin.com. 
 <div id="footnote1"/>
 <sup>1: Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.</sup>
 <div id="footnote2"/>
-<sup>2: If the original text is in English, the `english_title` and `english_description` fields will simply contain a copy of the original fields. The parameters are all optional, and if none is specified they default to: `{title: True, description: True, english_title: False, english_description: False}`</sup>
+<sup>2: If the original text is in English, the `english_title` and `english_description` fields will simply contain a copy of the original fields. The parameters are all optional, and if none is specified they default to: `{\"title\": true, \"description\": true, \"english_title\": false, \"english_description\": false}`. If at least one is specified, the others will default to false.</sup>
 <div id="footnote3"/>
 <sup>3: http://www.unixtimestamp.com/</sup>
 <div id="footnote4"/>

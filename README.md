@@ -71,7 +71,7 @@ example_search = {
     {
       "match": "1",                                            
       "search": ["gold", "silver", "palladium", "platinum"],
-      "scope": {"english_title": True, "english_description": False}
+      "scope": {"english_title": True}
     },
     {
       "match": "2",

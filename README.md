@@ -135,7 +135,9 @@ bucket = "monthly"
 stats_response = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), headers={"authorization": auth_token})
 stats_dict = json.loads(stats_response)
 ```
- 
+Since our statistics refer to time periods of constant length *(buckets)*, the first thing to do is to choose the size of the *bucket* we want to investigate.  The available values are `hourly`,`daily`,`weekly`,`monthly` and `yearly`. 
+
+We also pass the `search_id` along, and what we get back is the number of articles matching that search that we gathered for each bucket, starting at th
 
 <div id='topic'/>
 ### Retrieving information about a topic
@@ -150,9 +152,9 @@ topic_dict = json.loads(topic_response)
 ```
 Aside from the usual `id`, and a list of `article_id` sharing the specified topic contained in the `articles` field, the return object contains some slightly more cryptic fields:
 
-* `epoch` is the Unix timestamp<sup>[2](#footnote3)</sup> in which the article was published 
-* `buzz` is our proprietary ranking system, calculated on how often a news article is reported and on how quickly it spreads across the Web
+* `epoch` is the Unix timestamp<sup>[3](#footnote3)</sup> in which the article was published 
 * `activity` askwillem
+* `decaying_activity` is our proprietary ranking system, calculated on how often a news article is reported and on how quickly it spreads across the Web
 * `latest` is the timestamp in which an article referring to this topic was last spotted.
 
 <div id='wrappingup'/>

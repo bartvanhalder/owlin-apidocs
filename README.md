@@ -102,9 +102,9 @@ The keywords we used to define the search are divided between two tags: `should`
 A rule is defined by:
 * a `match` field, whose value is a string with the minimum number of terms we want our rule to match. We can also use *"all"* if we want the rule to match all the terms.<sup>[1](#footnote1)</sup>
 * a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single (non empty) character and _*_ any sequence of characters, including the empty one. 
-* a `scope` field, which tells our API if where to look for the expressions, more specifically:
-  * if `title` and/or `description` are set to True, it will look in the title and the body of the news articles, respectively;
-  * if `english_title` and/or `english_description` are set to True, it will look for the expressions in the translated version of title and body.<sup>[2](#footnote2)</sup>
+* a `scope` field, which tells our API where to look for the expressions, more specifically:
+  * if `title` and/or `description` are set to True, it will look in the title and/or the body of the news articles, respectively;
+  * if `english_title` and/or `english_description` are set to True, it will look for the expressions in the translated version of the title and/or the body. This <sup>[2](#footnote2)</sup>
 
 We actually used wildcards in our example search: we wanted to match the words *market* and *markets*, but not the word *marketing*; we then added *market*\* under a `should` rule, and *marketing* under a `should not` rule.
 
@@ -152,9 +152,9 @@ topic_dict = json.loads(topic_response)
 ```
 Aside from the usual `id`, and a list of `article_id` sharing the specified topic contained in the `articles` field, the return object contains some slightly more cryptic fields:
 
-* `epoch` is the Unix timestamp<sup>[3](#footnote3)</sup> in which the article was published 
-* `activity` askwillem
-* `decaying_activity` is our proprietary ranking system, calculated on how often a news article is reported and on how quickly it spreads across the Web
+* `epoch` is the Unix timestamp<sup>[3](#footnote3)</sup> in which the article was published;
+* `activity` is our proprietary ranking system, calculated on how often a news article is reported and on how quickly it spreads across the Web. This can be used, for instance, if you would like to know which were the biggest stories over the past year;
+* `buzz` is obtained by simply adding the epoch to the activity score;
 * `latest` is the timestamp in which an article referring to this topic was last spotted.
 
 <div id='wrappingup'/>

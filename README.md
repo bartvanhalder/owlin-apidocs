@@ -1,534 +1,216 @@
-# Owlin REST API
+## Owlin REST API 2.alpha - Java SE Runtime Environment 7 Walkthrough
 
-##### Table of contents
-- [The URL Scheme](#url-scheme)
-    - [Input / Sending data](#input—sending-data)
-	- [Output / Receiving data](#output—receiving-data)
-- [General definitions](#general_definitions)
-	- [filter rule definitions](#filter-rules)
-	- [stream_id definitions](#stream_id-options)
-- [API Methods](#api_methods)
-	- [get_articles](#get_articles)
-	- [stats](#stats)
-	- [filter.get](#filterget)
-	- [filter.save](#filtersave)
-	- [group.get](#groupget)
-	- [invite.generate_token](#invitegenerate_token)
-	- [signup.token](#signuptoken)
-	- [signup](#signup)
-	- [password.update](#passwordupdate)
-	- [user_info](#user_info)
-- [Undocumented Methods](#undocumented-methods)
-	
-======================
+This is a short quickstart guide to learn how to use our awesome new API.
 
-### URL Scheme
-The request url of the Owlin API is constructed as follows,
+### Table of contents
+- [The REST API documentation](#apidocumentation)
+- [Get started](#getstarted)
+- [Getting an authorization token](#authtoken)
+- [Creating a new search](#newsearch)
+- [Retrieving the articles related to a search](#searcharticles)
+- [Retrieving the statistics related to a search](#searchstats)
 
-#### Input / Sending data:
-Both GET and POST are supported for the same type of requests. However, whenever an extra-parameter is longer than 1024 bytes, you should use POST headers.
+<div id='apidocumentation'/>
+### The REST API documentation
+The Owlin API 2.0 interactive reference documentation can be reached at the following URL: http://jsapi.devstar.owlin.com/documentation
 
-##### For GET requests with e.g. 2 parameters:
-``https://newsroom.owlin.com/api/v1/method/value?extra-parameter_1=extra-value_2&extra-parameter_2=extra-value_2``
+There you can:
+* find a detailed reference of the REST methods and their parameters
+* see the JSON schema to pass along the PUT, POST and PATCH calls
+* test all the methods directly from the browser!
 
-##### For POST requests with e.g. 1 parameter: 
-``https://newsroom.owlin.com/api/v1/method``
-``value=value&extra-parameter=extra-value``
+<div id='getstarted'/>
+### Get started
+All code snippets in this tutorial assume you have the following libraries installed and loaded:
 
-The value parameter is optional for most methods, both for POST and GET requests. Some methods however require a certain value to be set. 
+http://code.google.com/p/json-simple/
 
-#####  NOTE: Object (e.g. list or hashmap) as parameter:  
-When a method requires a dictionary as an extra-parameter-value, encode it as JSON and add two brackets behind [extra-parameter-name] i.e.
-``https://newsroom.owlin.com/api/v1/method/value?extra-parameter-name[]=extra-parameter-value``
+```java
+import java.io.BufferedReader;
+import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+ 
+import javax.net.ssl.HttpsURLConnection;
 
-#### Output / Receiving data:
-The API will always respond JSON.
-
-##### JSONP Callbacks
-To request a JSONP Callback from the API, to be used for instance in javascript, use ``?callback=callback_function_name``
-
-**Output example:**
-```javascript
-typeof callback_function_name === 'function' && callback_function_name({ /* .. your data .. */ })
+import org.json.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.JSONArray;
 ```
 
-==============
+it is also assumed that you have declared the base_url variable declared as follows,
 
-## Authentication
+```java
+private final String base_url = "http://api.owlin.com/v2";
 
-Almost every request requires authentication. It is a two-step process. 
+```
 
-##### 1. Generate a secret_key. 
-Each time you generate a secret_key a new session is started. 
-To generate a secret_key use the method [generate_secret](#generate_secret). The method requires 2 parameters, ``email`` and ``password``. If you are a newsroom user, you should use the same credentials here. 
+<div id='authtoken'/>
+###Getting an authorization token
 
-The required url is:
-``https://newsroom.owlin.com/api/v1/generate_secret?email=email@example.com&password=password``
+The first thing to do is to get an authorization token, it can be done as follows:
 
-**Minimize the number of sessions! Generate the secret key only when necessary and store it in your database. 
-This is because every time you generate a secret key, a new session is started and your password is sent over the internet. This is less secure, even though https encryption is used.**
+```java
+String user = "{ \"email\": \"your_email\", \"pw\": \"your_password\", \"duration\": 0 }";
 
-##### 2. Generate an access key
-Authenticating all api requests in a session requires the following parameters:
-	
-	- access_key
-	- session_id
-	- nonce
-	- time
+URL request = new URL(BASE_URL + "/tokens");
+HttpsURLConnection connection = (HttpsURLConnection) request.openConnection();
 
-##### Nonce
-The nonce variable is a random string, with a mimimum length of 32 characters.
-**You should generate a different nonce for each request.**
+connection.setRequestMethod("POST");
+connection.setRequestProperty("Content-Type", "application/json");
+connection.setDoOutput(true);
 
-##### Time
-Time is the unix timestamp (epoch) in seconds evaluated at the moment of generating the access key.
+OutputStream output = connection.getOutputStream();
+output.write(user.getBytes());
+output.flush();
+output.close();
 
-For each API request you need to generate a new access key. 
-The access key is generated by concatenation followed by taking a sha256 hash:
-``access_key = sha256( secret_key + nonce + time )``
+BufferedReader inputBuffer = new BufferedReader(
+               new InputStreamReader(connection.getInputStream())
+);
 
-**Do not pass the secret_key over the network when making API requests. The secret_key is only transmitted when retrieving it via the generate_secret function** 
+String inputLine;
+StringBuffer response = new StringBuffer();
 
-=========
+while ((inputLine = inputBuffer.readLine()) != null) {
+response.append(inputLine);
+}
+inputBuffer.close();
 
-## API Methods
-    
-### get_articles	
-Use the get_articles method to obtain articles from a news filter. 
+String auth_token = response.toString(); 
+```
 
-The following url will return all articles from the Apple filter with the filter_id ``82512822dfe111e2a6d2001143dc2095``:
-``https://newsroom.owlin.com/api/v1/get_articles/filter:82512822dfe111e2a6d2001143dc2095?access_key=[access_key]&nonce=[new_nonce]&time=[time_used_in_access_key]&session_id=[session_id]``
+ We store the token in a variable, because it will be a parameter to all our successive REST calls; we assume `auth_token` to contain a valid token in all the following code.
+ 
+<div id='newsearch'/>
+### Creating a new search
+Once we have the token, things start getting more interesting!
 
-The value parameter ``filter:82512822dfe111e2a6d2001143dc2095`` is an example of a stream_id. For different stream_id options see the stream_id options paragraph in the description of the facets method. 
+Let's say, as an example, that we want to be up to date with the latest news related to the price fluctuations of some precious metals, namely gold, silver, platinum and palladium. Just typing in the keywords would not be specific enough, because while most of the articles containg the world "gold" are indeed related to the price of gold, Owlin would keep us up to date also about sport champions who just earned a gold medal, and freemium websites that just introduced a new gold membership.
+Don't forget, by the way, that our sources go well beyond the mainstream news outlets! 
+
+We then put together an example search, that you can see below.  For more information about the single fields, don't forget to check the API 2.0 reference at the link above.
+
+```java
+String example_search = "{ " +
+        "\"title\": \"test\", " +
+	"\"article_languages\": [ \"en\" ], " +
+	"\"should\": [ {" +
+	    "\"match\": 1, " +
+	    "\"search\": [ \"apple\" ], " +
+	    "\"scope\": { \"title\": true, \"description\": false } " +
+	"} ], " +
+        "\"should_not\": [ { " +
+	    "\"match\": 1, " +
+	    "\"search\": [ \"test\" ], " +
+	    "\"scope\": { \"title\": true, \"description\": false } " +
+	"} ], " +
+	"\"includes\": [], " +
+	"\"excludes\": [], " +
+	"\"permissions\": {} " +
+    "}";
+
+URL request = new URL(BASE_URL + "/news-searches");
+HttpsURLConnection connection = (HttpsURLConnection) request.openConnection();
+                        
+connection.setRequestMethod("POST");
+connection.setRequestProperty("authorization", auth_token);
+connection.setRequestProperty("Content-Type", "application/json");
+connection.setDoOutput(true);
+                        
+OutputStream output = connection.getOutputStream();
+output.write(example_search.getBytes());
+output.flush();
+output.close();
+			
+BufferedReader inputBuffer = new BufferedReader(
+    new InputStreamReader(connection.getInputStream())
+);
+
+String inputLine;
+StringBuffer response = new StringBuffer();
+                        
+while ((inputLine = inputBuffer.readLine()) != null) {
+    response.append(inputLine);
+}
+inputBuffer.close();
+                         
+JSONObject search_object = new JSONObject(response.toString());
+```
+
+The keywords we used to define the search are divided between two tags: `should` and `should not`; the words in `should` are the ones we want in our articles, the ones in `should not` are the ones we would like to filter out. A single tag contains a list of rules.
+
+A rule is defined by:
+* a `match` field, whose value is a string with the minimum number of terms we want our rule to match. We can also use *"all"* if we want the rule to match all the terms. Note that matching a single term equals to a logical *OR*, while matching all the terms works like a logical *AND* between them.
+* a `search` field, that contains a list of search expressions, each encoded as a string. __?__ and __*__ can be used as wildcards, where _?_ represents any single character and _*_ any sequence of characters. 
+* a `scope` field, with two boolean values that tell our back-end if to look for the specified expressions just in the title of the article, just in the body, or in both.  
+
+We actually used wildcards in our example search: we wanted to match the words *market* and *markets*, but not the word *marketing*; we then added *market*\* under a `should` rule, and *marketing* under a `should not` rule.
+
+The tags `includes` and `excludes` are used to chain searches: you can add there one or more search ids to expand on them.  The search ids are part of the object returned by the POST call, as we will see just now.
+
+<div id='searcharticles'/>
+### Retrieving the articles related to a search
+
+Having our personal search saved into the system is a nice achievement in itself, but we may as well be interested in getting some actual content. The first step, as suggested above, is to extract the *id* of the search we just created from the output of the POST call.
+
+```java
+String search_id = search_object.getString("id");
+
+URL request = new URL(BASE_URL + "/news-searches/" + search_id + "/articles");
+HttpsURLConnection connection = (HttpsURLConnection) request.openConnection();
+ 
+connection.setRequestMethod("GET");
+connection.setRequestProperty("authorization", auth_token);
+connection.setRequestProperty("Content-Type", "application/json");
+connection.setDoOutput(true);
+			
+BufferedReader inputBuffer = new BufferedReader(
+    new InputStreamReader(connection.getInputStream())
+);
+
+String inputLine;
+StringBuffer response = new StringBuffer();
+ 
+while ((inputLine = inputBuffer.readLine()) != null) {
+    response.append(inputLine);
+}
+inputBuffer.close();
 		
-##### Additional parameters:
-- ``hits``
- - default: 25
- - number between 0 and 200 
- - Using the hits parameter you can change the amount of articles returned	
-- ``sort``
-	- The 'sort' parameter determines the way articles are sorted.	
-	- The sorting order is always descending.
-	- default: decaying_activity
-	- Value can be 
-		- decaying_activity
-		- activity
-		- epoch
-- ``range``
-	- Use the range parameter to filter out articles from a specific time or ranking range. The value is an object with the key you want to filter on, followed by a ``from`` and/or ``to`` field. Like: ``range[]= {"epoch":{"from":1389861184,"to":1391070784}}``.
-	- By default, the range goes from 2 weeks ago to the current time.
-	- Fields of which you can set a range are:
-		- decaying_activity
-		- activity
-		- epoch
-- ``group_by``	
-	- Using the group_by parameter, you can filter the results on unique values for that field. Saying ``group_by=topic`` will return you a list of only unique topics.
-	- Fields you can group by are:
-		- topic
-		- none
-	- ``stats``
-		- If you set this value to ``true``, we will apply the [stats method](#stats) to each topic in the results on the key ``stats``.
-- ``fields``
-    - Using the fields parameter, you can select the return fields. Like: ``fields=["header","description"]`` or ``fields=["topic","epoch","language"]``.
-
-##### Output(without using the additional fields parameter):
-```javascript
-[
-    {
-      "url": "http://thenextweb.com/twitter/2014/01/30/the-original-owner-of-n-still-hasnt-got-his-twitter-account-back-someone-else-snapped-it-up/",
-      "topic": "1b2b4384c061442e78e0d89363d1d482",
-      "epoch": 1391068768,
-      "decaying_activity": 1391068768,
-      "urlhash": "f760702ee6a5a81cf515d6f29d6cfc32",
-      "header": "The original owner of @N still hasn’t got his Twitter account back – someone else snapped it up",
-      "topic_epoch": 1390986023,
-      "activity": 0,
-      "domain": "thenextweb.com",
-      "language": "en",
-      "read": false
-    }
-	/* .. truncated ..*/
-]
+JSONArray articles_response = (JSONArray)JSONValue.parse(response.toString());
 ```
+The variable `articles_response` now contains a 
 
-============
 
-### stats 
-Use this method to get statistics about articles in a news filter.
+<div id='searchstats'/>
+### Retrieving the statistics related to a search
 
-The following url will return an array with amount of articles posted per minute, each minute, over the past 14 days,
-``https://newsroom.owlin.com/api/v1/stats/filter:82512822dfe111e2a6d2001143dc2095?access_key=[access_key]&nonce=[nonce]&time=[time_used_in_access_key]&session_id=[session_id]``
+```java
+String bucket = "monthly";
 
-*As for the get_article method the value parameter is a stream_id.*
+URL request = new URL(BASE_URL + "/news-searches/" + search_id + "/stats/" + bucket);
 
-*Nice to know: when the amount of articles within a given time-window equals zero, no results are given. *
+String search_id = search_object.getString("id");
 
-#### Additional parameters:
-- ``interval``
-	- default: ``60``
-	- number of seconds, length of the binning time intervals. 
-	- Using the 'interval' parameter you can define the amount of seconds to group the statistics on.
-- ``date_from``
-	- Using the 'from' parameter you can define the begin date in epoch to select the articles from.
-	- default: ``epoch(time - 2 weeks ago)``
-- ``date_to``
-	- Using the 'date_to' parameter you can define the end range of the statistics. Based on article publish date.
-	- default: ``now``
+URL request = new URL(BASE_URL + "/news-searches/" + search_id + "/articles");
+HttpsURLConnection connection = (HttpsURLConnection) request.openConnection();
+ 
+connection.setRequestMethod("GET");
+connection.setRequestProperty("authorization", auth_token);
+connection.setRequestProperty("Content-Type", "application/json");
+connection.setDoOutput(true);
+			
+BufferedReader inputBuffer = new BufferedReader(
+    new InputStreamReader(connection.getInputStream())
+);
 
-##### Output
-```javascript
-[
-	/* … truncated … */
-	{
-		"key": 1382400000,
-		"count": 55163
-	},
-	{
-		"key": 1391040000,
-		"count": 97
-	}
-]
-```
-
-============
-
-### filter.get
-Use this method to get filters by their ids.
-
-This method always returns the title of the filter, the alert settings, last modified, created, creator and if you are allowed acces it also gives the search rules which determine the filter's output.  
-The following url will return a list with the contents of the apple filter
-``https://newsroom.owlin.com/api/v1/filter.get/82512822dfe111e2a6d2001143dc2095?session_id=[session_id]&access_key=[access_key]&nonce=[new_nonce]&time=[time_used_in_access_key]``
-
-##### Multiple filters:
-Separate multiple filter_ids by commas
-
-##### Advanced parameters:
-This method has no advanced options.
-
-##### Output:
-```javascript
-{
-    "vfzowgkpkrupafspxscilgfmqwrcgqnh": {
-        "filter_id": "vfzowgkpkrupafspxscilgfmqwrcgqnh",
-        "stream_id": "filter:vfzowgkpkrupafspxscilgfmqwrcgqnh",
-        "creator": "7e7eecc0534611e2bc97001143dc2095",
-        "created": 1390401909.438,
-        "rules": [
-            {
-                "value": "\"albert heijn\" \"albert hein\" \"appie\"",
-                "type": "search"
-            }
-        ],
-        "title": "Albert Heijn",
-        "sort": "decaying_activity",
-        "group_by": "topic",
-        "last_modified": 1390401941.274,
-        "edit": true,
-        "alert": false
-    }
+String inputLine;
+StringBuffer response = new StringBuffer();
+ 
+while ((inputLine = inputBuffer.readLine()) != null) {
+    response.append(inputLine);
 }
-```
-
-**Note that each requested filter is nested in an object with its filter_id as key.**
-
-============
-
-### filter.save
-Use this method to create or edit a filter.
-
-The following url will create a filter searching for apple:
-``https://newsroom.owlin.com/api/v1/filter.save/new?title=Apple&rules[]=[{"type":"search","value":"apple"}]&session_id=[session_id]&access_key=[access_key]&nonce=[new_nonce]&time=[time_used_in_access_key]``
+inputBuffer.close();
 		
-**Creating a new filter**
-Pass the value ``new``  to create a new filter.
-
-**Editing an existing filter**
-Pass the filter_id in the ``value`` parameter in order to save an existing filter. This requires permissions to edit this filter.
-		
-##### Advanced parameters:
-- ``title``
-	- Defines the title for the filter
-	- This field is required
-- ``alert``
-	- Sends an email to the user whenever a new article matches the filter
-	- Default: false
-- ``rules``
-	- Define here on what queries your filter should search. Read more about rules [here](#filter-rules)
-
-##### Example output:
-```javascript
-{
-	"filter_id": "vfzowgkpkrupafspxscilgfmqwrcgqnh",
-	"stream_id": "filter:vfzowgkpkrupafspxscilgfmqwrcgqnh",
-	"creator": "7e7eecc0534611e2bc97001143dc2095",
-	"created": 1390401909.438,
-	"rules": [
-		{
-			"value": "\"albert heijn\" \"albert hein\" \"appie\"",
-			"type": "search"
-		}
-	],
-	"title": "Albert Heijn",
-	"sort": "decaying_activity",
-	"group_by": "topic",
-	"last_modified": 1390401941.274,
-	"edit": true,
-	"alert": false
-}
-``` 		
-
-============
-
-### group.get
-Use this method to get groups by their ids.
-
-This method always returns the title of the group, creator, last modified, created and the associated stream_ids.
-The following url will return a object with the content of the indices group: ``https://newsroom.owlin.com/api/v1/group.get/fxqmqymkxn0mrlrmijodenoghizjunmk?session_id=[session_id]&access_key=[access_key]&nonce=[new_nonce]&time=[time_used_in_access_key]``
-
-##### Multiple groups:
-For each group, you need to do a separate group.get request.
-
-##### Advanced parameters:
-This method has no advanced options.
-
-##### Output:
-```javascript
-{
-    "group_id": "fxqmqymkxn0mrlrmijodenoghizjunmk",
-    "creator": "jpuqcl0cwhujk0tsdkjnjhoiwoersnku",
-    "stream_id": "group:fxqmqymkxn0mrlrmijodenoghizjunmk",
-    "title": "Indices",
-    "stream_ids": [
-        "filter:uxujqkjgcirmtrpqihchfyyxlknbdkkb",
-        "filter:uxxvzbkzxxrphjiostmwojundfijyhkl",
-        "filter:crvsblvhestbhbtidbbcizqwxeoowbrs",
-        "filter:kgvltbjlsguskwgmoombwubfbjycaetz",
-        "group:pnraopmjaahpgiufzznhonuergocmktr"
-    ],
-    "sort": "decaying_activity",
-    "created": 1421507167.365,
-    "edit": true,
-    "group_by": "topic",
-    "last_modified": 1421507167.365
-}
+JSONArray stats_json = (JSONArray)JSONValue.parse(response.toString());
 ```
-
-============
-
-### generate_secret
-Start a new session to generate a secret key, to use for authentication. Read the [authentication section](#authentiction) section to know more about the usage of secret keys.
-
-The following url will return a freshly generated secret key to you:
-``https://newsroom.owlin.com/api/v1/generate_secret?email=[email@example.com]&password=[password]``
-
-**Minimize the number of sessions! Generate the secret key only when necessary and store it in your database. 
-This is because every time you generate a secret key, a new session is started and your password is sent over the internet. This is less secure, even though https encryption is used.**
-
-##### Parameters:
-- ``email``
-- ``password``
-If you are a newsroom user, you should use the same credentials here. 
-
-##### Advanced parameters:
-This method has no advanced options.
-
-##### Example output
-```javascript
-{
-    "secret_key": "qhduspongebobxxjnyijsquarepantsy",
-    "session_id": "bzljgctjpatrickpprexafzaszdfvoxl",
-    "creation_date": 1391115255,
-    "last_used_date": 1391115255,
-    "user_id": "7e7eecc0534611e2bc97001143dc2095",
-    "server_time": 1391115255
-}
-```
-**To read more about the implementation of secret keys, see the [authentication section](#authentication).**
-
-
-============
-
-### invite.generate_token
-Generate a token you can use to create a new user account. 
-
-The following url will create a token to create a new user account:
-``https://newsroom.owlin.com/api/v1/invite.generate_token?session_id=[session_id]&access_key=[access_key]&nonce=[new_nonce]&time=[time_used_in_access_key]``
-
-**Note: This method is not available to everyone and will be activated upon request.** 
-**Note: Signup tokens expire after 60 days**
-
-##### Advanced parameters:
-- email
-	- This assigns the invite token to be only used by the defined email address. 
-
-##### Example output:
-```javascript
-{
-    "token_id": "swysriumctlbfbpecxlshhwysfhtelxx",
-    "inviter": "7e7eecc0534611e2bc97001143dc2095",
-    "user_id": false,
-    "created": 1390989876.013,
-    "email": ""
-  }
-```
-
-============
-
-### signup.token
-Retrieve information about a signup token.
-
-The following url will return information about a given signup token:
-``https://newsroom.owlin.com/api/v1/signup.token/[token_id]``
-
-##### Advanced parameters:
-This method has no advanced options.
-
-##### Example output:
-```javascript
-{
-    "token_id": "swysriumctlbfbpecxlshhwysfhtelxx",
-    "inviter": "7e7eecc0534611e2bc97001143dc2095",
-    "user_id": false,
-    "created": 1390989876.013,
-    "email": ""
-  }
-```
-
-============
-
-### signup
-This creates a new user account you can use to login into the newsroom or make API requests with.
-
-The following URL will create a new user account
-``https://newsroom.owlin.com/api/v1/signup?name=Luke%20Skywalker&email=luke.skywalker@jediorder.gov&password=usetheforce111&phone=063FE4823&invite_token=swysriumctlbfbpecxlshhwysfhtelxx``
-
-- ``name``
-	- Your name
-- ``email``
-	- Your email address
-- ``password``
-	- Your password, should be at least 6 characters
-- ``phone``
-	- Your phone number
-- ``invite_token``
-	- Your invite token you generated before using the [invite.generate_token function](#invitegenerate_token)
-
-##### Output:
-```javascript
-{
-    "secret_key": "voqiwzxhmcnswgnhtkmvqegbulalmsib",
-    "session_id": "glkltchg0qnnehiqjcrdjyednyniuaso",
-    "creation_date": 1390990917,
-    "last_used_date": 1390990917,
-    "user_id": "mwfhnhnpwitwpkuvxnjjbzztjwphcmtk",
-    "server_time": 1390990917
-  }
-```
-
-============
-
-### password.update
-This allows you to change the password for your user account when you still remember the old password.
-
-The following url will change your password:
-``https://newsroom.owlin.com/api/v1/password.update?old_password=usetheforce111&new_password=I_miss_my_dad82&session_id=[session_id]&access_key=access_key&nonce=[nonce]&time=[time_used_in_access_key]``
-
-- ``old_password``
-	- Please verify your old password for extra verification
-- ``new_password``
-	- Your new password, should be at least 6 characters long.
-
-##### Example output:
-```javascript
-{
-    "success": true,
-    "user_id": "mwfhnhnpwitwpkuvxnjjbzztjwphcmtk"
-  }
-```
-
-============
-
-### user_info
-This allows you to retrieve information about the authenticated user, including it's name, email, phone number and license information.
-
-The following url will give you information about the authenticated user:
-``https://newsroom.owlin.com/api/v1/user_info?session_id=[session_id]&access_key=access_key&nonce=[nonce]&time=[time_used_in_access_key]``
-
-##### Example output:
-```javascript
-{
-	"email": "wessel@owlin.com",
-	"id": "7e7eecc0534611e2bc97001143dc2095",
-	"license": 1,
-	"licensed": 4107684146,
-	"meta": {
-		"theme": "light"
-	},
-	"name": "Wessel Stoker",
-	"supplier": "owlin"
-}
-```
-
-============
-
-# General Definitions
-
-### Filter Rules:
-When saving the filter, you can attach rules to the must and must_not parameters. You can use the following rules:
-	
-- search
-	- Yields articles matching the query string
-	- Example: `` { "type" : "search, "value" : "apple" } ``
-	- Parameters
-		- ``value``: Query in the Lucene query language
-- should
-	- Yields articles containing at least 2 terms
-	- Example: ``{ "type" : "should", "value" : "apple samsung nokia", "n" : 2 }``
-	- Parameters:
-		- ``value``: query in the Lucene query language
-		- ``n``: minimum amount of terms, ranging between 1 and 10
-- language
-	- Yields articles of only these languages
-	- Example: ``{ "type" : "lang", "value" : [ "nl" ] }``
-	- Default: all languages
-	- Parameters:
-		- ``value``: Language code of language, can be ``nl``, ``fr``, ``en``, ``de`` or ``pl``
-- translate
-	- Defines to search in the original or translated text (or both).
-	- Example: ``{ "type" : "translate", "value" : ["original", "translated"] }``
-	- Default: ``[original]``
-	- Parameters:
-		- ``value``: list of text editions to search in ``[ original, translated ]``
-- fields
-	- Defines in which fields to search
-	- Example: ``{ "type" : "fields", "value" : ["header", "description"] }``
-	- Default = [ header, description ]
-	- Parameters:
-		- ``value``: list of fields to search in ``[ header, description ]``
-- filter
-	- Includes the search queries from another filter. 
-	- Example: ``{ "type" : "filter", "value" : "filter:82512822dfe111e2a6d2001143dc2095" }``
-	- Parameters:
-		- ``value``: stream_id you want to in/exclude
-
-### stream_id options:	
-The required value parameter for the ``get_articles`` and ``stats`` methods is a stream_id associated to a search. The stream_id can take several different forms:
-
-- filter:filter_id
-	- Will return all articles contained in that filter
-- thread:topic_id
-	- Will return all articles inside a topic.
-- group:group_id
-	- Will return all articles merged from a group of filters		
-
-# Undocumented methods:
-The following methods exist but are not documented yet, if you have any questions about this, please contact wessel@owlin.com or browse [the Owlin newsroom](https://newsroom.owlin.com)’s browser console network log. 
-- invite.email
-- group.save
-- group.add
-- group.remove
-- password.reset
-- change_password
-- highlight
-- read.get
-- read.save

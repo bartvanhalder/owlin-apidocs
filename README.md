@@ -209,7 +209,7 @@ inputBuffer.close();
 JSONArray stats_json = (JSONArray)JSONValue.parse(response.toString());
 ```
 
-Since our statistics refer to time periods of constant length *(buckets)*, the first thing to do is to choose the size of the *bucket* we want to investigate.  The available values are `hourly`,`daily`,`weekly`,`monthly` and `yearly`.  We can also choose a time window for our buckets, by specifying the values of the `from` and `to` parameters as Unix epochs.<sup>[3](#footnote3)</sup>
+Since our statistics refer to sequential time periods of constant length *(buckets)*, the first thing to do is to choose the size of the *bucket* we want to investigate.  The available values are `hourly`,`daily`,`weekly`,`monthly` and `yearly`.  We can also choose a time window for our buckets, by specifying the values of the `from` and `to` parameters as Unix epochs.<sup>[3](#footnote3)</sup>
 
 We then pass the `search_id` along, and what we get back is the number of articles matching that search that we gathered for each bucket, starting at `epoch_from` and ending at `epoch_to`.  
 

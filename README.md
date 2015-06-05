@@ -136,7 +136,7 @@ epoch_to = 1433462400     # equivalent to midnight UTC of 05/06/2015
 stats_response = requests.get("{0}/news-searches/{1}/stats/{2}".format(base_url,search_id,bucket), headers={"authorization": auth_token}, params={"from": epoch_from, "to": epoch_to})
 stats_dict = json.loads(stats_response)
 ```
-Since our statistics refer to time periods of constant length *(buckets)*, the first thing to do is to choose the size of the *bucket* we want to investigate.  The available values are `hourly`,`daily`,`weekly`,`monthly` and `yearly`.  We can also choose a time window for our buckets, by specifying the values of the `from` and `to` parameters as Unix epochs.<sup>[3](#footnote3)</sup>
+Since our statistics refer to sequential time periods of constant length *(buckets)*, the first thing to do is to choose the size of the *bucket* we want to investigate.  The available values are `hourly`,`daily`,`weekly`,`monthly` and `yearly`.  We can also choose a time window for our buckets, by specifying the values of the `from` and `to` parameters as Unix epochs.<sup>[3](#footnote3)</sup>
 
 We then pass the `search_id` along, and what we get back is the number of articles matching that search that we gathered for each bucket, starting at `epoch_from` and ending at `epoch_to`.  
 

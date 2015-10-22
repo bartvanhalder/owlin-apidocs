@@ -31,10 +31,11 @@ All code snippets in this tutorial assume you have the following libraries insta
 import json, requests   # if you don't have requests installed, "pip install requests" will do
 ```
 
-It is also assumed that you have declared and initialized the `base_url` variable:
+It is also assumed that you have declared and initialized the `base_url` and `token_url` variables:
 
 ```python
 base_url = "https://api.owlin.com/v2"
+token_url = "https://tokens.owlin.com/"
 ```
 
 <div id='authtoken'/>
@@ -46,10 +47,10 @@ The first thing to do is to get an authorization token, it can be done as follow
 user_data = {
   "pw": "your_password",
   "email": "your_email",
-  "duration": 0             # it should be left to 0 for now
 }
 
-auth_token = requests.post("{0}/tokens".format(base_url), data=json.dumps(user_data)).text
+response = requests.post("{0}/tokens".format(tokens_url), data=json.dumps(user_data))
+token = json.loads(response)["token"]
 ```
 
  We store the token in a variable, because it will be a parameter to all our successive REST calls; we assume `auth_token` to contain a valid token in all the following code.
